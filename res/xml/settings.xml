@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="Einstellungen">
+
+        <EditTextPreference
+                android:key="vereinname"
+                android:defaultValue="Unbenannt"
+                android:title="Vereinsname"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Info">
+
+        <Preference
+                android:key="moreInfos"
+                android:title="Weitere Informationen"/>
+
+        <Preference
+                android:key="spendenButton"
+                android:title="Spenden per Paypal"
+                android:summary="Unterstützt mich wenn ihr mögt"/>
+
+        <Preference
+                android:key="websiteButton"
+                android:title="Website"
+                android:summary="http://capgeti.de"/>
+
+        <Preference
+                android:title="Version 0.9.1 Beta"
+                android:summary="Build 2: 27. August 2013"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

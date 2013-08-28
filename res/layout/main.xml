@@ -5,9 +5,27 @@
               android:layout_height="fill_parent"
         >
     <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World, Main"
-            />
+            android:text="Verwaltungstool für Vereinslager"
+            android:id="@+id/textView" android:layout_gravity="center"
+            android:layout_marginBottom="30dp" android:layout_marginTop="10dp" android:textSize="20dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lager"
+            android:id="@+id/lagerButton" android:layout_gravity="center" android:padding="20dp"
+            android:onClick="showLager"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personen"
+            android:id="@+id/personenButton" android:layout_gravity="center" android:padding="20dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Optionen"
+            android:onClick="showOptionen"
+            android:id="@+id/optionButton" android:layout_gravity="center" android:padding="20dp"/>
 </LinearLayout>
 

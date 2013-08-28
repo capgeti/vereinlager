@@ -1,7 +1,9 @@
 package de.capgeti.vereinlager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class Main extends Activity {
     /**
@@ -11,5 +13,13 @@ public class Main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+    }
+
+    public void showLager(View view) {
+        startActivity(new Intent(this, Lager.class));
+    }
+
+    public void showOptionen(View view) {
+        startActivity(new Intent(this, Settings.class));
     }
 }
