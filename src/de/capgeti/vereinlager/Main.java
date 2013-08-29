@@ -6,6 +6,6 @@ import java.awt.*;
 public class Main {
 
     public static void main(String[] args) {
-        new MainView().showWindow();
+        new MainPresenter();
     }
 }
