@@ -2,6 +2,7 @@ package de.capgeti.vereinlager.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -27,5 +28,16 @@ public class Voice implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    @Override public String toString() {
+        return "Voice{" +
+                "name='" + name + '\'' +
+                ", persons=" + new HashSet<Person>(persons) +
+                '}';
     }
 }

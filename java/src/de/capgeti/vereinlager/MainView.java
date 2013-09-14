@@ -4,11 +4,16 @@ import de.capgeti.vereinlager.model.Person;
 import de.capgeti.vereinlager.model.Voice;
 
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 
 import static java.awt.event.MouseEvent.BUTTON3;
 
@@ -20,8 +25,9 @@ public class MainView extends JFrame {
     private static final int ROOT_LEVEL = 1;
     private static final int FIRST_LEVEL = 2;
     private static final int SECOND_LEVEL = 3;
-    private final TreeModel userModel;
+    private final DefaultTreeModel userModel;
     private final DefaultTreeModel kabuffModel;
+    private final DefaultMutableTreeNode voiceRootNode = new DefaultMutableTreeNode("Stimmgruppen");
     private JPanel parentPanel;
     private JTree kabuffTree;
     private JCheckBox summierteAnzeigeCheckBox;
@@ -41,9 +47,30 @@ public class MainView extends JFrame {
         kabuffModel = new DefaultTreeModel(new DefaultMutableTreeNode("Kabuff"));
         kabuffTree.setModel(kabuffModel);
 
-        userModel = new DefaultTreeModel(new DefaultMutableTreeNode("Stimmgruppen"));
+        userModel = new DefaultTreeModel(voiceRootNode);
         userTree.setModel(userModel);
+        userTree.setCellEditor(new DefaultCellEditor(new JTextField()));
+        userTree.setEditable(true);
 
+        userModel.addTreeModelListener(new TreeModelListener() {
+            @Override public void treeNodesChanged(TreeModelEvent e) {
+                System.err.println("change " + e.toString());
+            }
+
+            @Override public void treeNodesInserted(TreeModelEvent e) {
+                System.err.println("insert " + e.getTreePath());
+            }
+
+            @Override public void treeNodesRemoved(TreeModelEvent e) {
+                System.err.println("removed " + e.getTreePath());
+            }
+
+            @Override public void treeStructureChanged(TreeModelEvent e) {
+                System.err.println("structure change " + e.getTreePath());
+            }
+        });
+
+        updateVoiceModel();
 
         userTree.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -85,6 +112,21 @@ public class MainView extends JFrame {
 
     }
 
+    private void updateVoiceModel() {
+        final Map<String, Voice> voiceMap = presenter.getVoices();
+        if (voiceMap == null) return;
+        for (Voice voice : voiceMap.values()) {
+            final DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(voice.getName());
+            voiceRootNode.add(newChild);
+
+            if (voice.getPersons() == null) continue;
+            for (Person person : voice.getPersons()) {
+                newChild.add(new DefaultMutableTreeNode(person.getName()));
+            }
+        }
+        userTree.expandRow(0);
+    }
+
     private void createVoiceContextMenu(JPopupMenu menu) {
         final JMenuItem menuItem = new JMenuItem("Neue Stimme");
         menuItem.addActionListener(new ActionListener() {
@@ -103,6 +145,16 @@ public class MainView extends JFrame {
             }
         });
         menu.add(menuItem);
+        final JMenuItem umbenennen = new JMenuItem("Umbenennen");
+        umbenennen.addActionListener(new
+                                             ActionListener() {
+                                                 @Override public void actionPerformed(ActionEvent e) {
+                                                     showRenameVoice();
+                                                 }
+                                             });
+        menu.add(umbenennen);
+        menu.add(new JPopupMenu.Separator());
+        menu.add(new JMenuItem("Löschen"));
     }
 
     private void detailPersonContextMenu(JPopupMenu menu) {
@@ -124,9 +176,19 @@ public class MainView extends JFrame {
         new SingleTextDialog("Neue Stimme") {
             @Override public void onOK(String name) {
                 final Voice voice = presenter.onCreateVoice(name);
-                final DefaultMutableTreeNode root = (DefaultMutableTreeNode) userModel.getRoot();
-                root.add(new DefaultMutableTreeNode(voice.getName()));
-                userTree.expandPath(new TreePath(root));
+                voiceRootNode.add(new DefaultMutableTreeNode(voice.getName()));
+                userModel.reload();
+            }
+        }.showDialog();
+    }
+
+    private void showRenameVoice() {
+        final DefaultMutableTreeNode model = (DefaultMutableTreeNode) userTree.getSelectionPath().getLastPathComponent();
+        final Voice voice = (Voice) model.getUserObject();
+        new SingleTextDialog(voice.getName() + " umbenennen") {
+            @Override public void onOK(String name) {
+                final Voice newVoice = presenter.onRenameVoice(voice, name);
+                userModel.reload();
             }
         }.showDialog();
     }
@@ -136,7 +198,9 @@ public class MainView extends JFrame {
             @Override public void onOK(String name) {
                 final DefaultMutableTreeNode model = (DefaultMutableTreeNode) userTree.getSelectionPath().getLastPathComponent();
                 Person person = presenter.onCreatePerson(model.toString(), name);
-                model.add(new DefaultMutableTreeNode(person.getName()));
+                final DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(person.getName());
+                model.add(newChild);
+                userModel.reload(newChild.getParent());
                 userTree.expandPath(userTree.getSelectionPath());
             }
         }.showDialog();

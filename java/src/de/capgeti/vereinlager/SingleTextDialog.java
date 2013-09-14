@@ -52,6 +52,7 @@ public abstract class SingleTextDialog extends JDialog {
 
     public void showDialog() {
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 }

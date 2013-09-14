@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/gegenstand_list_sum_toogle"
+            android:title="Summieren"
+            android:showAsAction="collapseActionView"/>
+    <item
+            android:id="@+id/gegenstand_list_add"
+            android:title="Neuer Gegenstand"
+            android:icon="@android:drawable/ic_input_add"
+            android:showAsAction="ifRoom|withText"/>
+</menu>

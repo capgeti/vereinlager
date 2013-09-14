@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_width="wrap_content"
+              android:layout_height="fill_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anwesenheitsprogramm Version 1.0"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="10pt"
+            android:gravity="center"
+            android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="(c) 2013 Michael Wolter"
+            android:id="@+id/textView"
+            android:gravity="center"
+            android:textSize="6pt"
+            android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="http://www.capgeti.de"
+            android:id="@+id/textView1"
+            android:linksClickable="true"
+            android:clickable="true"
+            android:autoLink="web"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_marginBottom="30dp"/>
+
+</LinearLayout>

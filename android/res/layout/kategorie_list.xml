@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hemden"
+            android:id="@+id/text1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:textSize="18dp"
+            android:textColor="#ffffff"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"/>
+
+    <TextView
+            android:layout_width="183dp"
+            android:layout_height="wrap_content"
+            android:text="20 ( 10 / 21 )"
+            android:id="@+id/text2"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/text1"
+            android:gravity="bottom|right"
+            android:layout_alignTop="@+id/text1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="57dp"
+            android:layout_alignBottom="@+id/text1"/>
+</RelativeLayout>

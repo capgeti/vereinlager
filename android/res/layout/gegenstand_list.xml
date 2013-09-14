@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hemd"
+            android:id="@+id/gegenstandName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:textSize="18dp"
+            android:textColor="#ffffff"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"/>
+
+    <TextView
+            android:layout_width="183dp"
+            android:layout_height="wrap_content"
+            android:text="-> Michael Wolter"
+            android:id="@+id/gegenstandBesitzer"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/gegenstandName"
+            android:gravity="bottom|right"
+            android:layout_alignTop="@+id/gegenstandName"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="57dp"
+            android:layout_alignBottom="@+id/gegenstandName"/>
+
+    <TextView
+            android:layout_width="209dp"
+            android:layout_height="wrap_content"
+            android:text="Gr: 40"
+            android:id="@+id/gegenStandParams"
+            android:layout_alignRight="@+id/gegenstandName"
+            android:layout_alignTop="@+id/gegenstandName"
+            android:layout_alignBottom="@+id/gegenstandName"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="31dp"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:paddingTop="9dp"
+            android:gravity="right"/>
+</RelativeLayout>

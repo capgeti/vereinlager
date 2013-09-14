@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:hint="Kategoriename"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Eigenschaften:"
+                android:textSize="18dp"
+                android:gravity="fill_horizontal"
+                android:layout_weight="0.5"
+                android:layout_marginLeft="7dp"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hinzufügen"
+                android:id="@+id/button"
+                />
+    </LinearLayout>
+
+    <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/listView"/>
+</LinearLayout>
