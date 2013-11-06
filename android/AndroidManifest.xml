@@ -3,18 +3,49 @@
           package="de.capgeti.vereinlager"
           android:versionCode="1"
           android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="17"/>
+
+    <uses-sdk
+            android:minSdkVersion="11"
+            android:targetSdkVersion="17"/>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        <activity android:name=".Main"
-                  android:label="@string/app_name">
+    <application
+            android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher">
+        <activity
+                android:name=".MainActivity"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.DeviceDefault.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".KategorieDetail"/>
+
+        <activity
+                android:name=".KategorieListActivity"
+                android:theme="@android:style/Theme.DeviceDefault.Light"
+                android:parentActivityName="MainActivity"/>
+        <activity
+                android:name=".StimmgruppenListActivity"
+                android:theme="@android:style/Theme.DeviceDefault.Light"
+                android:parentActivityName="MainActivity"/>
+        <activity
+                android:name=".PersonenListActivity"
+                android:theme="@android:style/Theme.DeviceDefault.Light"
+                android:parentActivityName=".StimmgruppenListActivity"/>
+        <activity
+                android:name=".GegenstandListActivity"
+                android:theme="@android:style/Theme.DeviceDefault.Light"
+                android:parentActivityName="KategorieListActivity"/>
+        <activity
+                android:name=".KategorieDetailActivity"
+                android:theme="@android:style/Theme.DeviceDefault.Light"
+                android:parentActivityName="KategorieListActivity"/>
+        <activity
+                android:name=".GegenstandDetailActivity"
+                android:theme="@android:style/Theme.DeviceDefault.Light"
+                android:parentActivityName="GegenstandListActivity"/>
     </application>
 </manifest>

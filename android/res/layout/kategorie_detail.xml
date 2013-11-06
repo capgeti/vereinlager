@@ -6,12 +6,26 @@
               android:layout_height="fill_parent">
 
     <EditText
+            android:id="@+id/kategorie_detail_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
             android:layout_gravity="center"
             android:singleLine="true"
-            android:hint="Kategoriename"/>
+            android:hint="Kategoriename"
+            android:paddingTop="13dp"
+            android:layout_marginBottom="13dp"
+            android:paddingBottom="13dp"/>
+
+    <EditText
+            android:id="@+id/kategorie_detail_gegenstand_std_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:hint="Standard Gegenstand Name"
+            android:paddingTop="13dp"
+            android:layout_marginBottom="13dp"
+            android:paddingBottom="13dp"/>
 
     <LinearLayout
             android:orientation="horizontal"
@@ -19,25 +33,51 @@
             android:layout_height="wrap_content"
             >
 
-        <TextView
-                android:layout_width="fill_parent"
+        <EditText
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Eigenschaften:"
-                android:textSize="18dp"
-                android:gravity="fill_horizontal"
-                android:layout_weight="0.5"
-                android:layout_marginLeft="7dp"/>
+                android:id="@+id/kategorie_detail_detail_text"
+                android:layout_weight="0.7"
+                android:hint="Detailname"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"/>
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/kategorie_detail_std_text"
+                android:layout_weight="0.2"
+                android:hint="Std"
+                android:paddingTop="13dp"
+                android:paddingBottom="13dp"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.1"
                 android:text="Hinzufügen"
-                android:id="@+id/button"
-                />
+                android:onClick="addDetail"
+                android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <ListView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/listView"/>
+            android:id="@+id/kategorie_detail_detail_list"
+            android:layout_weight="0.9"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_gravity="left|center_vertical"
+            android:layout_height="wrap_content"
+            android:text="* Achtung:\nDas entfernen eines bestehenden Details, löscht bei vorhandenen Gegenständen ebenfalls dieses Detail!"/>
+
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Speichern"
+            android:id="@+id/kategorie_detail_save_button"
+            android:layout_gravity="left|center_vertical"
+            android:onClick="save"/>
+
 </LinearLayout>

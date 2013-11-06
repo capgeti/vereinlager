@@ -6,21 +6,21 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Eigenschaft"
-            android:id="@+id/textView"
+            android:text="Detail"
+            android:id="@+id/gegenstand_detail_detail_name"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:textSize="16dp"
             android:gravity="center_vertical"
             android:layout_marginLeft="5dp"/>
 
-    <Button
+    <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" X "
-            android:id="@+id/button"
-            android:layout_gravity="center_horizontal"
-            />
+            android:id="@+id/gegenstand_detail_detail_value"
+            android:layout_weight="0.2"
+            android:hint="Wert"/>
+
 </LinearLayout>

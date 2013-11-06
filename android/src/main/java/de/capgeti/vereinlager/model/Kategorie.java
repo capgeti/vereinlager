@@ -5,11 +5,13 @@ package de.capgeti.vereinlager.model;
  * Date:   11.09.13 00:09
  */
 public class Kategorie {
+    private final long id;
     private final String name;
     private final Integer frei;
     private final Integer verwendet;
 
-    public Kategorie(String name, Integer frei, Integer verwendet) {
+    public Kategorie(long id, String name, Integer frei, Integer verwendet) {
+        this.id = id;
         this.name = name;
         this.frei = frei;
         this.verwendet = verwendet;
@@ -29,5 +31,9 @@ public class Kategorie {
 
     public Integer getVerwendet() {
         return verwendet;
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -6,9 +6,15 @@ package de.capgeti.vereinlager.model;
  */
 public class Person {
     private final String name;
+    private Long id;
 
-    public Person(String name) {
+    public Person(Long id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

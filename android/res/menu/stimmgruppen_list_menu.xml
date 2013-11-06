@@ -2,7 +2,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/kategorie_list_add"
-            android:title="Neue Kategorie"
+            android:id="@+id/stimmgruppe_list_add"
+            android:title="Stimmgruppe hinzufügen"
             android:showAsAction="ifRoom|withText"/>
 </menu>

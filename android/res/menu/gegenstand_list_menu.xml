@@ -2,12 +2,19 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+            android:id="@+id/gegenstand_list_delete_kategorie"
+            android:title="Kategorie Löschen"
+            android:showAsAction="collapseActionView"/>
+   <item
+            android:id="@+id/gegenstand_list_edit_kategorie"
+            android:title="Kategorie Bearbeiten"
+            android:showAsAction="collapseActionView"/>
+   <item
             android:id="@+id/gegenstand_list_sum_toogle"
-            android:title="Summieren"
+            android:title="Summierte Liste"
             android:showAsAction="collapseActionView"/>
     <item
             android:id="@+id/gegenstand_list_add"
-            android:title="Neuer Gegenstand"
-            android:icon="@android:drawable/ic_input_add"
+            android:title="Neuer Eintrag"
             android:showAsAction="ifRoom|withText"/>
 </menu>
