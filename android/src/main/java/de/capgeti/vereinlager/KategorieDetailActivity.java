@@ -50,7 +50,7 @@ public class KategorieDetailActivity extends Activity {
                 final String std = detail.getStandard();
                 lineOneView.setText(detail.getName() + (std != null ? " (" + std + ")" : ""));
 
-                Button deleteButton = (Button) listItemView.findViewById(R.id.deleteButton);
+                ImageButton deleteButton = (ImageButton) listItemView.findViewById(R.id.deleteButton);
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View view) {
                         details.remove(position);

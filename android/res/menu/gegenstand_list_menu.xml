@@ -16,5 +16,6 @@
     <item
             android:id="@+id/gegenstand_list_add"
             android:title="Neuer Eintrag"
+            android:icon="@drawable/ic_action_new_label"
             android:showAsAction="ifRoom|withText"/>
 </menu>

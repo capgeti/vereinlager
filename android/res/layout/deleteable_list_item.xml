@@ -11,15 +11,19 @@
             android:text="Eigenschaft"
             android:id="@+id/text1"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.9"
             android:textSize="16dp"
             android:gravity="center_vertical"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.9"/>
 
-    <Button
+    <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" X "
             android:id="@+id/deleteButton"
+            android:layout_gravity="center|right"
+            android:layout_weight="0.1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_action_discard"
             />
+
 </LinearLayout>

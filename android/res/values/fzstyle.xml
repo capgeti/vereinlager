@@ -1,0 +1,25 @@
+<resources>
+    <style name="FzTheme" parent="@android:style/Theme.DeviceDefault.Light">
+        <item name="android:actionBarStyle">@style/FzActionBar</item>
+        <item name="android:actionOverflowButtonStyle">@style/FzOverflowButtonStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_action_previous_item</item>
+        <item name="android:textViewStyle">@style/FzTextViewStyle</item>
+    </style>
+
+    <style name="FzActionBar" parent="@android:style/Widget.DeviceDefault.ActionBar">
+        <item name="android:background">@android:color/holo_green_dark</item>
+        <item name="android:titleTextStyle">@style/FzTitleTextStyle</item>
+    </style>
+
+    <style name="FzTextViewStyle" parent="@android:style/Widget.TextView">
+        <item name="android:drawablePadding">10dp</item>
+    </style>
+
+    <style name="FzTitleTextStyle" parent="android:TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="FzOverflowButtonStyle" parent="android:Widget.DeviceDefault.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_overflow</item>
+    </style>
+</resources>

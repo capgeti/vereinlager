@@ -4,5 +4,6 @@
     <item
             android:id="@+id/kategorie_list_add"
             android:title="Neue Kategorie"
+            android:icon="@drawable/ic_action_new"
             android:showAsAction="ifRoom|withText"/>
 </menu>

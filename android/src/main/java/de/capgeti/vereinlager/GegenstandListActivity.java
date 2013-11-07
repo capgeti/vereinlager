@@ -24,10 +24,10 @@ import java.util.*;
  */
 public class GegenstandListActivity extends ListActivity {
     List<Gegenstand> countries = new ArrayList<Gegenstand>(Arrays.asList(
-            new Gegenstand(0, "Lefima", map("Nr", 1), new Person(id, "Clemens Werler")),
+            new Gegenstand(0, "Lefima", map("Nr", 1), new Person(1L, "Clemens Werler")),
             new Gegenstand(1, "Lefima", map("Nr", 2), null),
-            new Gegenstand(2, "Lefima", map("Nr", 3), new Person(id, "Lucas Reinhardt")),
-            new Gegenstand(3, "Lefima", map("Nr", 7), new Person(id, "Michael Wolter"))));
+            new Gegenstand(2, "Lefima", map("Nr", 3), new Person(2L, "Lucas Reinhardt")),
+            new Gegenstand(3, "Lefima", map("Nr", 7), new Person(3L, "Michael Wolter"))));
     private boolean sumView = false;
 
     private Map<String, Object> map(Object... objects) {

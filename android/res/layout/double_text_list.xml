@@ -29,5 +29,6 @@
             android:layout_alignTop="@+id/text1"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="57dp"
-            android:layout_alignBottom="@+id/text1"/>
+            android:layout_alignBottom="@+id/text1"
+            android:layout_marginRight="8dp"/>
 </RelativeLayout>

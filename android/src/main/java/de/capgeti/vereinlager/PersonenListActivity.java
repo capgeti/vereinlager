@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.capgeti.vereinlager.model.Person;
@@ -28,10 +29,10 @@ import static java.util.Arrays.asList;
  */
 public class PersonenListActivity extends ListActivity {
     private List<Person> listItems = new ArrayList<Person>(asList(
-            new Person(id, "Jens Hatzky"),
-            new Person(id, "Alexander Kaschig"),
-            new Person(id, "Clemens Werler"),
-            new Person(id, "Michael Wolter")
+            new Person(1L, "Jens Hatzky"),
+            new Person(2L, "Alexander Kaschig"),
+            new Person(3L, "Clemens Werler"),
+            new Person(4L, "Michael Wolter")
     ));
     private CustomArrayAdapter<Person> adapter;
     private StimmgruppeHandler stimmgruppeHandler;
@@ -43,10 +44,11 @@ public class PersonenListActivity extends ListActivity {
 
             @Override protected void fillView(View listItemView, final int position) {
                 TextView lineOneView = (TextView) listItemView.findViewById(R.id.text1);
-                Button deleteButton = (Button) listItemView.findViewById(R.id.deleteButton);
+                ImageButton deleteButton = (ImageButton) listItemView.findViewById(R.id.deleteButton);
 
                 final Person s = getItem(position);
                 lineOneView.setText(s.getName());
+                lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_person, 0, 0, 0);
 
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View view) {
@@ -84,7 +86,7 @@ public class PersonenListActivity extends ListActivity {
                             return false;
                         }
 
-                        listItems.add(new Person(id, value));
+                        listItems.add(new Person(-1L, value));
                         adapter.notifyDataSetChanged();
                         Toast.makeText(PersonenListActivity.this, value + " gespeichert!", 2).show();
                         return true;

@@ -22,4 +22,8 @@ public class MainActivity extends Activity {
     public void showStimmgruppenList(View view) {
         startActivity(new Intent(this, StimmgruppenListActivity.class));
     }
+
+    public void closeApp(View view) {
+        finish();
+    }
 }

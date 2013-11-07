@@ -3,6 +3,9 @@ package de.capgeti.vereinlager;
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +39,8 @@ public class StimmgruppenListActivity extends ListActivity {
 
                 Stimmgruppe s = getItem(position);
                 lineOneView.setText(s.getName());
+                lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_group, 0, 0, 0);
+
                 lineTwoView.setText(s.getPersonen() + " Personen");
             }
         };
