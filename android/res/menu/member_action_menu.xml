@@ -2,13 +2,13 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/action_edit_stimmgruppe"
-            android:title="Stimmgruppe Bearbeiten"
+            android:id="@+id/action_edit_member_group"
+            android:title="Gruppe Bearbeiten"
             android:icon="@drawable/ic_action_edit_white"
             android:showAsAction="ifRoom|withText"/>
     <item
-            android:id="@+id/action_delete_stimmgruppe"
-            android:title="Stimmgruppe Löschen"
+            android:id="@+id/action_delete_member_group"
+            android:title="Gruppe Löschen"
             android:icon="@drawable/ic_action_discard_white"
             android:showAsAction="ifRoom|withText"/>
 </menu>

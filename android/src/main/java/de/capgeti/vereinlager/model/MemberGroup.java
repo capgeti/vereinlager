@@ -6,15 +6,15 @@ import java.io.Serializable;
  * Author: capgeti
  * Date:   11.09.13 00:09
  */
-public class Stimmgruppe implements Serializable {
+public class MemberGroup implements Serializable {
     private Long id;
     private String name;
     private Integer personen;
 
-    public Stimmgruppe() {
+    public MemberGroup() {
     }
 
-    public Stimmgruppe(Long id, String name, Integer personen) {
+    public MemberGroup(Long id, String name, Integer personen) {
         this.id = id;
         this.name = name;
         this.personen = personen;

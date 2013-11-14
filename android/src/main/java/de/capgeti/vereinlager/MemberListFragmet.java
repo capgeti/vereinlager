@@ -2,15 +2,15 @@ package de.capgeti.vereinlager;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.ListActivity;
+import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
-import de.capgeti.vereinlager.db.StimmgruppeDataSource;
+import de.capgeti.vereinlager.db.MemberDataSource;
 import de.capgeti.vereinlager.util.CustomCursorAdapter;
 
 
@@ -18,15 +18,21 @@ import de.capgeti.vereinlager.util.CustomCursorAdapter;
  * Author: capgeti
  * Date:   05.09.13 23:11
  */
-public class StimmgruppenListActivity extends ListActivity implements AdapterView.OnItemClickListener {
+public class MemberListFragmet extends ListFragment implements AdapterView.OnItemClickListener {
     private SimpleCursorAdapter adapter;
-    private StimmgruppeDataSource stimmgruppeDataSource;
+    private MemberDataSource memberDataSource;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        stimmgruppeDataSource = new StimmgruppeDataSource(this);
-        final Cursor list = stimmgruppeDataSource.list();
-        adapter = new CustomCursorAdapter(this, R.layout.double_text_list, list) {
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        memberDataSource = new MemberDataSource(getActivity());
+        final Cursor list = memberDataSource.list();
+        adapter = new CustomCursorAdapter(getActivity(), R.layout.double_text_list, list) {
             @Override public void fillView(View parent, Cursor position) {
                 TextView lineOneView = (TextView) parent.findViewById(R.id.text1);
                 TextView lineTwoView = (TextView) parent.findViewById(R.id.text2);
@@ -38,8 +44,8 @@ public class StimmgruppenListActivity extends ListActivity implements AdapterVie
             }
         };
 
-        final ActionBar actionBar = getActionBar();
-        actionBar.setTitle("Stimmgruppen");
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setTitle("Mitglieder");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setListAdapter(adapter);
@@ -59,8 +65,8 @@ public class StimmgruppenListActivity extends ListActivity implements AdapterVie
                     @Override
                     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
                         MenuInflater inflater = actionMode.getMenuInflater();
-                        inflater.inflate(R.menu.stimmgruppen_action_menu, menu);
-                        actionMode.setTitle("Stimmgruppen");
+                        inflater.inflate(R.menu.member_action_menu, menu);
+                        actionMode.setTitle("Mitglieder");
                         return true;
                     }
 
@@ -72,7 +78,7 @@ public class StimmgruppenListActivity extends ListActivity implements AdapterVie
                     @Override
                     public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.action_edit_stimmgruppe:
+                            case R.id.action_edit_member_group:
                                 final SparseBooleanArray positions = lv.getCheckedItemPositions();
                                 int pos = -1;
                                 for (int i = 0; i < lv.getCount(); i++) {
@@ -83,26 +89,26 @@ public class StimmgruppenListActivity extends ListActivity implements AdapterVie
                                 }
                                 final Cursor cursor = adapter.getCursor();
                                 cursor.moveToPosition(pos);
-                                new SimplePrompt(StimmgruppenListActivity.this, "Stimmgruppe bearbeiten!", "Bitte Namen eingeben:", cursor.getString(1)) {
+                                new SimplePrompt(MemberListFragmet.this.getActivity(), "Gruppe bearbeiten!", "Bitte Namen eingeben:", cursor.getString(1)) {
                                     @Override public boolean onOK(String value) {
                                         if (value == null || value.isEmpty()) {
-                                            Toast.makeText(StimmgruppenListActivity.this, "Bitte Namen angeben!", 2).show();
+                                            Toast.makeText(MemberListFragmet.this.getActivity(), "Bitte Namen angeben!", 2).show();
                                             return false;
                                         }
 
-                                        stimmgruppeDataSource.update(cursor.getLong(0), value);
+                                        memberDataSource.update(cursor.getLong(0), value);
                                         refreshList();
-                                        Toast.makeText(StimmgruppenListActivity.this, value + " gespeichert!", 2).show();
+                                        Toast.makeText(MemberListFragmet.this.getActivity(), value + " gespeichert!", 2).show();
                                         actionMode.finish();
                                         return true;
                                     }
                                 };
                                 return true;
 
-                            case R.id.action_delete_stimmgruppe:
-                                new AlertDialog.Builder(StimmgruppenListActivity.this)
-                                        .setTitle("Stimmgruppe Löschen?")
-                                        .setMessage("Möchtest du die Stimmgruppe/n wirklich löschen?\nAlle Personen und deren Verknüpfungen gehen dabei verloren!\nBenutzte Gegenstände werden wieder freigegeben.")
+                            case R.id.action_delete_member_group:
+                                new AlertDialog.Builder(MemberListFragmet.this.getActivity())
+                                        .setTitle("Gruppe Löschen?")
+                                        .setMessage("Möchtest du die Gruppe/n wirklich löschen?\nAlle Personen und deren Verknüpfungen gehen dabei verloren!\nBenutzte Gegenstände werden wieder freigegeben.")
                                         .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -111,11 +117,11 @@ public class StimmgruppenListActivity extends ListActivity implements AdapterVie
                                                 for (int j = 0; j < lv.getCount(); j++) {
                                                     if (pos.get(j)) {
                                                         adapterCursor.moveToPosition(j);
-                                                        stimmgruppeDataSource.delete(adapterCursor.getLong(0));
+                                                        memberDataSource.delete(adapterCursor.getLong(0));
                                                     }
                                                 }
                                                 refreshList();
-                                                Toast.makeText(StimmgruppenListActivity.this, "Stimmgruppen gelöscht!", 2).show();
+                                                Toast.makeText(MemberListFragmet.this.getActivity(), "Gruppen gelöscht!", 2).show();
                                                 actionMode.finish();
                                             }
                                         })
@@ -131,27 +137,25 @@ public class StimmgruppenListActivity extends ListActivity implements AdapterVie
         lv.setMultiChoiceModeListener(multiChoiceModeListener);
 
         lv.setOnItemClickListener(this);
-
-        super.onCreate(savedInstanceState);
     }
 
     private void refreshList() {
-        adapter.changeCursor(stimmgruppeDataSource.list());
+        adapter.changeCursor(memberDataSource.list());
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.stimmgruppe_list_add:
-                new SimplePrompt(this, "Neue Stimmgruppe", "Bitte Namen eingeben:") {
+            case R.id.member_list_add:
+                new SimplePrompt(getActivity(), "Neue Gruppe", "Bitte Namen eingeben:") {
                     @Override public boolean onOK(String value) {
                         if (value == null || value.isEmpty()) {
-                            Toast.makeText(StimmgruppenListActivity.this, "Bitte Stimmgruppe angeben!", 2).show();
+                            Toast.makeText(MemberListFragmet.this.getActivity(), "Bitte Namen angeben!", 2).show();
                             return false;
                         }
 
-                        stimmgruppeDataSource.create(value);
+                        memberDataSource.create(value);
                         refreshList();
-                        Toast.makeText(StimmgruppenListActivity.this, "Stimmgruppe " + value + " gespeichert!", 2).show();
+                        Toast.makeText(MemberListFragmet.this.getActivity(), "Gruppe " + value + " gespeichert!", 2).show();
                         return true;
                     }
                 };
@@ -160,26 +164,35 @@ public class StimmgruppenListActivity extends ListActivity implements AdapterVie
         return super.onOptionsItemSelected(item);
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.stimmgruppen_list_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.member_list_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override protected void onPause() {
+    @Override public void onPause() {
         super.onPause();
-        stimmgruppeDataSource.close();
+        memberDataSource.close();
     }
 
-    @Override protected void onResume() {
+    @Override public void onResume() {
         super.onResume();
-        stimmgruppeDataSource.open();
+        memberDataSource.open();
     }
 
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        final Intent intent = new Intent(this, PersonenListActivity.class);
         final Cursor cursor = adapter.getCursor();
-        cursor.moveToPosition(position);
-        intent.putExtra("stimmgruppeId", cursor.getLong(0));
-        startActivity(intent);
+
+        ListFragment fragment = new PersonenListFragment();
+        Bundle args = new Bundle();
+        args.putLong("memberId", cursor.getLong(0));
+        fragment.setArguments(args);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .addToBackStack("person")
+                .commit();
+
+        getActivity().invalidateOptionsMenu();
     }
 }

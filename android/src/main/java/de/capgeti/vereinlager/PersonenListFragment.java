@@ -1,49 +1,57 @@
 package de.capgeti.vereinlager;
 
 import android.app.ActionBar;
-import android.app.ListActivity;
+import android.app.ListFragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.capgeti.vereinlager.db.PersonDataSource;
-import de.capgeti.vereinlager.db.StimmgruppeDataSource;
+import de.capgeti.vereinlager.db.MemberDataSource;
 import de.capgeti.vereinlager.util.CustomCursorAdapter;
 
 /**
  * Author: capgeti
  * Date:   05.09.13 23:11
  */
-public class PersonenListActivity extends ListActivity {
+public class PersonenListFragment extends ListFragment {
     private CustomCursorAdapter adapter;
     private PersonDataSource personDataSource;
-    private long stimmgruppeId;
+    private long memberId;
 
-    @Override protected void onPause() {
+    @Override public void onPause() {
         super.onPause();
         personDataSource.close();
     }
 
-    @Override protected void onResume() {
+    @Override public void onResume() {
         super.onResume();
         personDataSource.open();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        StimmgruppeDataSource stimmgruppeDataSource = new StimmgruppeDataSource(this);
-        final Cursor stimmgruppeCursor = stimmgruppeDataSource.detail(getIntent().getLongExtra("stimmgruppeId", -1));
-        stimmgruppeCursor.moveToFirst();
-        stimmgruppeId = stimmgruppeCursor.getLong(0);
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
-        personDataSource = new PersonDataSource(this);
-        final Cursor personen = personDataSource.list(stimmgruppeId);
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        MemberDataSource memberDataSource = new MemberDataSource(getActivity());
 
-        adapter = new CustomCursorAdapter(this, R.layout.deleteable_list_item, personen) {
+        final Cursor memberCursor = memberDataSource.detail(getArguments().getLong("memberId", -1));
+        memberCursor.moveToFirst();
+        memberId = memberCursor.getLong(0);
+
+        personDataSource = new PersonDataSource(getActivity());
+        final Cursor personen = personDataSource.list(memberId);
+
+        adapter = new CustomCursorAdapter(getActivity(), R.layout.deleteable_list_item, personen) {
 
             @Override protected void fillView(View listItemView, final Cursor position) {
                 TextView lineOneView = (TextView) listItemView.findViewById(R.id.text1);
@@ -56,33 +64,33 @@ public class PersonenListActivity extends ListActivity {
                     @Override public void onClick(View view) {
                         personDataSource.delete(position.getLong(0));
                         refreshList();
-                        Toast.makeText(PersonenListActivity.this, "Person gelöscht!", 2).show();
+                        Toast.makeText(PersonenListFragment.this.getActivity(), "Person gelöscht!", 2).show();
                     }
                 });
             }
         };
 
-        final ActionBar actionBar = getActionBar();
-        actionBar.setTitle(stimmgruppeCursor.getString(1));
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        final ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setTitle(memberCursor.getString(1));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setIcon(R.drawable.ic_action_group_white);
 
         setListAdapter(adapter);
-        super.onCreate(savedInstanceState);
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.person_list_add:
-                new SimplePrompt(this, "Neue Person", "Bitte Namen eingeben:") {
+                new SimplePrompt(getActivity(), "Neue Person", "Bitte Namen eingeben:") {
                     @Override public boolean onOK(String value) {
                         if (value == null || value.isEmpty()) {
-                            Toast.makeText(PersonenListActivity.this, "Bitte Namen angeben!", 2).show();
+                            Toast.makeText(getActivity(), "Bitte Namen angeben!", 2).show();
                             return false;
                         }
 
-                        personDataSource.create(value, stimmgruppeId);
+                        personDataSource.create(value, memberId);
                         refreshList();
-                        Toast.makeText(PersonenListActivity.this, value + " gespeichert!", 2).show();
+                        Toast.makeText(getActivity(), value + " gespeichert!", 2).show();
                         return true;
                     }
                 };
@@ -92,11 +100,10 @@ public class PersonenListActivity extends ListActivity {
     }
 
     private void refreshList() {
-        adapter.changeCursor(personDataSource.list(stimmgruppeId));
+        adapter.changeCursor(personDataSource.list(memberId));
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.person_list_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.person_list_menu, menu);
     }
 }

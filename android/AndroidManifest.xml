@@ -29,13 +29,6 @@
                 android:name=".KategorieListActivity"
                 android:parentActivityName="MainActivity"/>
         <activity
-                android:name=".StimmgruppenListActivity"
-                android:parentActivityName="MainActivity"/>
-        <activity
-                android:name=".PersonenListActivity"
-                android:icon="@drawable/ic_action_group_white"
-                android:parentActivityName=".StimmgruppenListActivity"/>
-        <activity
                 android:name=".GegenstandListActivity"
                 android:parentActivityName="KategorieListActivity"/>
         <activity

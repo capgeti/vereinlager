@@ -15,12 +15,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table person (id integer primary key autoincrement, stimmgruppe_id long references stimmgruppe(id), name text)");
-        db.execSQL("create table stimmgruppe (id integer primary key autoincrement, name text)");
+        db.execSQL("create table person (id integer primary key autoincrement, member_id long references member(id), name text)");
+        db.execSQL("create table member (id integer primary key autoincrement, name text)");
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int i, int i2) {
-        db.execSQL("DROP TABLE IF EXISTS stimmgruppe");
+        db.execSQL("DROP TABLE IF EXISTS member");
         db.execSQL("DROP TABLE IF EXISTS person");
 
         onCreate(db);

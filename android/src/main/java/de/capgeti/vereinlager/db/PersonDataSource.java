@@ -27,24 +27,25 @@ public class PersonDataSource {
         dbHelper.close();
     }
 
-    public void create(String name, long stimmgruppeId) {
+    public void create(String name, long memberId) {
         ContentValues values = new ContentValues();
         values.put("name", name);
-        values.put("stimmgruppe_id", stimmgruppeId);
-        long insertId = database.insert("person", null, values);
+        values.put("member_id", memberId);
+        database.insert("person", null, values);
     }
 
     public void delete(long id) {
         database.delete("person", "id = " + id, null);
     }
 
-    public Cursor list(long stimmgruppeId) {
+    public Cursor list(long memberId) {
         return database.rawQuery("" +
                 "select " +
                 "   p.id as _id, " +
                 "   p.name " +
-                "from person p left join stimmgruppe s on p.stimmgruppe_id = s.id " +
-                "where p.stimmgruppe_id = ?",
-                new String[]{String.valueOf(stimmgruppeId)});
+                "from person p left join member s on p.member_id = s.id " +
+                "where p.member_id = ? " +
+                "order by p.name",
+                new String[]{String.valueOf(memberId)});
     }
 }
