@@ -1,79 +1,73 @@
 package de.capgeti.vereinlager;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.capgeti.vereinlager.model.Person;
-import de.capgeti.vereinlager.model.Stimmgruppe;
-import de.capgeti.vereinlager.util.CustomArrayAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static de.capgeti.vereinlager.StimmgruppeHandler.get;
-import static java.util.Arrays.asList;
+import de.capgeti.vereinlager.db.PersonDataSource;
+import de.capgeti.vereinlager.db.StimmgruppeDataSource;
+import de.capgeti.vereinlager.util.CustomCursorAdapter;
 
 /**
  * Author: capgeti
  * Date:   05.09.13 23:11
  */
 public class PersonenListActivity extends ListActivity {
-    private List<Person> listItems = new ArrayList<Person>(asList(
-            new Person(1L, "Jens Hatzky"),
-            new Person(2L, "Alexander Kaschig"),
-            new Person(3L, "Clemens Werler"),
-            new Person(4L, "Michael Wolter")
-    ));
-    private CustomArrayAdapter<Person> adapter;
-    private StimmgruppeHandler stimmgruppeHandler;
-    private Stimmgruppe stimmgruppe;
+    private CustomCursorAdapter adapter;
+    private PersonDataSource personDataSource;
+    private long stimmgruppeId;
+
+    @Override protected void onPause() {
+        super.onPause();
+        personDataSource.close();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        personDataSource.open();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        adapter = new CustomArrayAdapter<Person>(this, R.layout.deleteable_list_item, listItems) {
+        StimmgruppeDataSource stimmgruppeDataSource = new StimmgruppeDataSource(this);
+        final Cursor stimmgruppeCursor = stimmgruppeDataSource.detail(getIntent().getLongExtra("stimmgruppeId", -1));
+        stimmgruppeCursor.moveToFirst();
+        stimmgruppeId = stimmgruppeCursor.getLong(0);
 
-            @Override protected void fillView(View listItemView, final int position) {
+        personDataSource = new PersonDataSource(this);
+        final Cursor personen = personDataSource.list(stimmgruppeId);
+
+        adapter = new CustomCursorAdapter(this, R.layout.deleteable_list_item, personen) {
+
+            @Override protected void fillView(View listItemView, final Cursor position) {
                 TextView lineOneView = (TextView) listItemView.findViewById(R.id.text1);
                 ImageButton deleteButton = (ImageButton) listItemView.findViewById(R.id.deleteButton);
 
-                final Person s = getItem(position);
-                lineOneView.setText(s.getName());
+                lineOneView.setText(position.getString(1));
                 lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_person, 0, 0, 0);
 
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View view) {
-                        listItems.remove(s);
-                        adapter.notifyDataSetChanged();
+                        personDataSource.delete(position.getLong(0));
+                        refreshList();
                         Toast.makeText(PersonenListActivity.this, "Person gelöscht!", 2).show();
                     }
                 });
             }
         };
 
-
-        stimmgruppeHandler = get(this);
-
-        stimmgruppe = stimmgruppeHandler.loadStimmgruppe(getIntent().getLongExtra("stimmgruppeId", -1));
-        updateActionbarTitle();
+        final ActionBar actionBar = getActionBar();
+        actionBar.setTitle(stimmgruppeCursor.getString(1));
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         setListAdapter(adapter);
         super.onCreate(savedInstanceState);
-    }
-
-    private void updateActionbarTitle() {
-        final ActionBar actionBar = getActionBar();
-        actionBar.setTitle(stimmgruppe.getName());
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -86,47 +80,19 @@ public class PersonenListActivity extends ListActivity {
                             return false;
                         }
 
-                        listItems.add(new Person(-1L, value));
-                        adapter.notifyDataSetChanged();
+                        personDataSource.create(value, stimmgruppeId);
+                        refreshList();
                         Toast.makeText(PersonenListActivity.this, value + " gespeichert!", 2).show();
                         return true;
                     }
                 };
                 break;
-            case R.id.person_list_edit_stimmgruppe:
-                new SimplePrompt(this, "Stimmgruppe bearbeiten!", "Bitte Namen eingeben:", stimmgruppe.getName()) {
-                    @Override public boolean onOK(String value) {
-                        if (value == null || value.isEmpty()) {
-                            Toast.makeText(PersonenListActivity.this, "Bitte Namen angeben!", 2).show();
-                            return false;
-                        }
-                        final Stimmgruppe update = stimmgruppeHandler.editStimmgruppe(stimmgruppe.getId(), value);
-                        if (update != null) {
-                            stimmgruppe = update;
-                            updateActionbarTitle();
-                            Toast.makeText(PersonenListActivity.this, value + " gespeichert!", 2).show();
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                };
-                break;
-            case R.id.person_list_delete_stimmgruppe:
-                new AlertDialog.Builder(this)
-                        .setTitle("Stimmgruppe Löschen?")
-                        .setMessage("Möchtest du die Stimmgruppe wirklich löschen?\nAlle Personen und deren Verknüpfungen gehen dabei verloren!\nBenutzte Gegenstände werden wieder freigegeben.")
-                        .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {
-                            @Override public void onClick(DialogInterface dialogInterface, int i) {
-                                get(PersonenListActivity.this).deleteStimmgruppe(stimmgruppe.getId());
-                                Toast.makeText(PersonenListActivity.this, "Stimmgruppe gelöscht!", 2).show();
-                                navigateUpTo(new Intent(PersonenListActivity.this, StimmgruppenListActivity.class));
-                            }
-                        })
-                        .setNegativeButton("Ne doch nicht", null).create().show();
-                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshList() {
+        adapter.changeCursor(personDataSource.list(stimmgruppeId));
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

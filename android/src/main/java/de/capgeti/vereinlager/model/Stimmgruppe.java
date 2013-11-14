@@ -1,12 +1,6 @@
 package de.capgeti.vereinlager.model;
 
-import de.capgeti.vereinlager.StimmgruppeHandler;
-import org.mapdb.BTreeMap;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Author: capgeti

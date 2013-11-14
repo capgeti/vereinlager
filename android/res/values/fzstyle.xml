@@ -1,21 +1,46 @@
 <resources>
-    <style name="FzTheme" parent="@android:style/Theme.DeviceDefault.Light">
+    <style name="FzTheme" parent="@android:Theme.DeviceDefault.Light">
         <item name="android:actionBarStyle">@style/FzActionBar</item>
+        <item name="android:actionButtonStyle">@style/FzActionButtonStyle</item>
+        <item name="android:actionModeStyle">@style/FzActionModeStyle</item>
+        <item name="android:actionModeCloseDrawable">@drawable/ic_action_previous_item</item>
+
         <item name="android:actionOverflowButtonStyle">@style/FzOverflowButtonStyle</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_action_previous_item</item>
+
         <item name="android:textViewStyle">@style/FzTextViewStyle</item>
+        <item name="android:listViewStyle">@style/FzListViewStyle</item>
     </style>
 
-    <style name="FzActionBar" parent="@android:style/Widget.DeviceDefault.ActionBar">
+    <style name="FzActionBar" parent="@android:Widget.DeviceDefault.ActionBar">
         <item name="android:background">@android:color/holo_green_dark</item>
         <item name="android:titleTextStyle">@style/FzTitleTextStyle</item>
     </style>
 
-    <style name="FzTextViewStyle" parent="@android:style/Widget.TextView">
+    <style name="FzActionButtonStyle" parent="@android:Widget.ActionButton">
+        <item name="android:background">@drawable/actionbutton_selector</item>
+    </style>
+
+    <style name="FzActionModeStyle" parent="@android:Widget.DeviceDefault.ActionMode">
+        <item name="android:background">@android:color/holo_green_dark</item>
+        <item name="android:titleTextStyle">@style/FzTitleTextStyle</item>
+        <item name="android:subtitleTextStyle">@style/FzSubTitleTextStyle</item>
+    </style>
+
+    <style name="FzTextViewStyle" parent="@android:Widget.DeviceDefault.TextView">
         <item name="android:drawablePadding">10dp</item>
     </style>
 
+    <style name="FzListViewStyle" parent="@android:Widget.ListView">
+        <!--<item name="android:listSelector">@drawable/default_list_selector</item>-->
+        <!--<item name="android:textAppearanceListItem">@android:color/holo_blue_bright</item>-->
+    </style>
+
     <style name="FzTitleTextStyle" parent="android:TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="FzSubTitleTextStyle" parent="android:TextAppearance.DeviceDefault.Widget.ActionBar.Subtitle">
         <item name="android:textColor">#ffffff</item>
     </style>
 

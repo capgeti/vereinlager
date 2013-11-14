@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/action_edit_stimmgruppe"
+            android:title="Stimmgruppe Bearbeiten"
+            android:icon="@drawable/ic_action_edit_white"
+            android:showAsAction="ifRoom|withText"/>
+    <item
+            android:id="@+id/action_delete_stimmgruppe"
+            android:title="Stimmgruppe Löschen"
+            android:icon="@drawable/ic_action_discard_white"
+            android:showAsAction="ifRoom|withText"/>
+</menu>

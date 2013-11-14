@@ -2,14 +2,6 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/person_list_delete_stimmgruppe"
-            android:title="Stimmgruppe Löschen"
-            android:showAsAction="collapseActionView"/>
-    <item
-            android:id="@+id/person_list_edit_stimmgruppe"
-            android:title="Stimmgruppe Bearbeiten"
-            android:showAsAction="collapseActionView"/>
-    <item
             android:id="@+id/person_list_add"
             android:title="Person hinzufügen"
             android:icon="@drawable/ic_action_add_person_white"

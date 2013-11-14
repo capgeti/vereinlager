@@ -1,47 +1,40 @@
 package de.capgeti.vereinlager;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import de.capgeti.vereinlager.model.Stimmgruppe;
-import de.capgeti.vereinlager.util.CustomArrayAdapter;
+import android.util.SparseBooleanArray;
+import android.view.*;
+import android.widget.*;
+import de.capgeti.vereinlager.db.StimmgruppeDataSource;
+import de.capgeti.vereinlager.util.CustomCursorAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static de.capgeti.vereinlager.StimmgruppeHandler.get;
 
 /**
  * Author: capgeti
  * Date:   05.09.13 23:11
  */
-public class StimmgruppenListActivity extends ListActivity {
-    List<Stimmgruppe> stimmgruppenList = new ArrayList<Stimmgruppe>();
-    private CustomArrayAdapter<Stimmgruppe> adapter;
+public class StimmgruppenListActivity extends ListActivity implements AdapterView.OnItemClickListener {
+    private SimpleCursorAdapter adapter;
+    private StimmgruppeDataSource stimmgruppeDataSource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        adapter = new CustomArrayAdapter<Stimmgruppe>(this, R.layout.double_text_list, stimmgruppenList) {
+        stimmgruppeDataSource = new StimmgruppeDataSource(this);
+        final Cursor list = stimmgruppeDataSource.list();
+        adapter = new CustomCursorAdapter(this, R.layout.double_text_list, list) {
+            @Override public void fillView(View parent, Cursor position) {
+                TextView lineOneView = (TextView) parent.findViewById(R.id.text1);
+                TextView lineTwoView = (TextView) parent.findViewById(R.id.text2);
 
-            @Override protected void fillView(View listItemView, int position) {
-                TextView lineOneView = (TextView) listItemView.findViewById(R.id.text1);
-                TextView lineTwoView = (TextView) listItemView.findViewById(R.id.text2);
-
-                Stimmgruppe s = getItem(position);
-                lineOneView.setText(s.getName());
+                lineOneView.setText(position.getString(1));
                 lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_group, 0, 0, 0);
 
-                lineTwoView.setText(s.getPersonen() + " Personen");
+                lineTwoView.setText(position.getInt(2) + " Personen");
             }
         };
 
@@ -49,21 +42,101 @@ public class StimmgruppenListActivity extends ListActivity {
         actionBar.setTitle("Stimmgruppen");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
-        final List<Stimmgruppe> stimmgruppes = StimmgruppeHandler.get(this).listStimmgruppen();
-        if(stimmgruppes != null) {
-            stimmgruppenList.addAll(stimmgruppes);
-            adapter.notifyDataSetChanged();
-        }
-
         setListAdapter(adapter);
+
+        final ListView lv = getListView();
+        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        final AbsListView.MultiChoiceModeListener multiChoiceModeListener = new
+
+                AbsListView.MultiChoiceModeListener() {
+                    @Override
+                    public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
+                        final int count = lv.getCheckedItemCount();
+                        actionMode.setSubtitle(count + " ausgewählt");
+                        actionMode.getMenu().getItem(0).setVisible(count < 2);
+                    }
+
+                    @Override
+                    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                        MenuInflater inflater = actionMode.getMenuInflater();
+                        inflater.inflate(R.menu.stimmgruppen_action_menu, menu);
+                        actionMode.setTitle("Stimmgruppen");
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.action_edit_stimmgruppe:
+                                final SparseBooleanArray positions = lv.getCheckedItemPositions();
+                                int pos = -1;
+                                for (int i = 0; i < lv.getCount(); i++) {
+                                    if (positions.get(i)) {
+                                        pos = i;
+                                        break;
+                                    }
+                                }
+                                final Cursor cursor = adapter.getCursor();
+                                cursor.moveToPosition(pos);
+                                new SimplePrompt(StimmgruppenListActivity.this, "Stimmgruppe bearbeiten!", "Bitte Namen eingeben:", cursor.getString(1)) {
+                                    @Override public boolean onOK(String value) {
+                                        if (value == null || value.isEmpty()) {
+                                            Toast.makeText(StimmgruppenListActivity.this, "Bitte Namen angeben!", 2).show();
+                                            return false;
+                                        }
+
+                                        stimmgruppeDataSource.update(cursor.getLong(0), value);
+                                        refreshList();
+                                        Toast.makeText(StimmgruppenListActivity.this, value + " gespeichert!", 2).show();
+                                        actionMode.finish();
+                                        return true;
+                                    }
+                                };
+                                return true;
+
+                            case R.id.action_delete_stimmgruppe:
+                                new AlertDialog.Builder(StimmgruppenListActivity.this)
+                                        .setTitle("Stimmgruppe Löschen?")
+                                        .setMessage("Möchtest du die Stimmgruppe/n wirklich löschen?\nAlle Personen und deren Verknüpfungen gehen dabei verloren!\nBenutzte Gegenstände werden wieder freigegeben.")
+                                        .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                final SparseBooleanArray pos = lv.getCheckedItemPositions();
+                                                final Cursor adapterCursor = adapter.getCursor();
+                                                for (int j = 0; j < lv.getCount(); j++) {
+                                                    if (pos.get(j)) {
+                                                        adapterCursor.moveToPosition(j);
+                                                        stimmgruppeDataSource.delete(adapterCursor.getLong(0));
+                                                    }
+                                                }
+                                                refreshList();
+                                                Toast.makeText(StimmgruppenListActivity.this, "Stimmgruppen gelöscht!", 2).show();
+                                                actionMode.finish();
+                                            }
+                                        })
+                                        .setNegativeButton("Ne doch nicht", null).create().show();
+
+                        }
+                        return false;
+                    }
+
+                    @Override public void onDestroyActionMode(ActionMode actionMode) {
+                    }
+                };
+        lv.setMultiChoiceModeListener(multiChoiceModeListener);
+
+        lv.setOnItemClickListener(this);
+
         super.onCreate(savedInstanceState);
     }
 
-    @Override public void onListItemClick(ListView l, View v, int position, long id) {
-        final Intent intent = new Intent(this, PersonenListActivity.class);
-        intent.putExtra("stimmgruppeId", stimmgruppenList.get(position).getId());
-        startActivity(intent);
+    private void refreshList() {
+        adapter.changeCursor(stimmgruppeDataSource.list());
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -76,15 +149,10 @@ public class StimmgruppenListActivity extends ListActivity {
                             return false;
                         }
 
-                        final Stimmgruppe stimmgruppe = get(StimmgruppenListActivity.this).createStimmgruppe(value);
-                        if (stimmgruppe != null) {
-                            stimmgruppenList.add(stimmgruppe);
-                            adapter.notifyDataSetChanged();
-                            Toast.makeText(StimmgruppenListActivity.this, "Stimmgruppe " + stimmgruppe.getName() + " gespeichert!", 2).show();
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        stimmgruppeDataSource.create(value);
+                        refreshList();
+                        Toast.makeText(StimmgruppenListActivity.this, "Stimmgruppe " + value + " gespeichert!", 2).show();
+                        return true;
                     }
                 };
                 break;
@@ -95,5 +163,23 @@ public class StimmgruppenListActivity extends ListActivity {
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.stimmgruppen_list_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
+        stimmgruppeDataSource.close();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        stimmgruppeDataSource.open();
+    }
+
+    @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        final Intent intent = new Intent(this, PersonenListActivity.class);
+        final Cursor cursor = adapter.getCursor();
+        cursor.moveToPosition(position);
+        intent.putExtra("stimmgruppeId", cursor.getLong(0));
+        startActivity(intent);
     }
 }
