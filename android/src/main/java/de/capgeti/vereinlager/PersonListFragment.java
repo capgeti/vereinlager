@@ -19,7 +19,7 @@ import de.capgeti.vereinlager.util.CustomCursorAdapter;
  * Author: capgeti
  * Date:   05.09.13 23:11
  */
-public class PersonenListFragment extends ListFragment {
+public class PersonListFragment extends ListFragment {
     private CustomCursorAdapter adapter;
     private PersonDataSource personDataSource;
     private long memberId;
@@ -64,7 +64,7 @@ public class PersonenListFragment extends ListFragment {
                     @Override public void onClick(View view) {
                         personDataSource.delete(position.getLong(0));
                         refreshList();
-                        Toast.makeText(PersonenListFragment.this.getActivity(), "Person gelöscht!", 2).show();
+                        Toast.makeText(PersonListFragment.this.getActivity(), "Person gelöscht!", 2).show();
                     }
                 });
             }

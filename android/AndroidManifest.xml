@@ -32,7 +32,8 @@
                 android:name=".GegenstandListActivity"
                 android:parentActivityName="KategorieListActivity"/>
         <activity
-                android:name=".KategorieDetailActivity"
+                android:name=".KategorieDetailFragment"
+                android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
                 android:parentActivityName="KategorieListActivity"/>
         <activity
                 android:name=".GegenstandDetailActivity"

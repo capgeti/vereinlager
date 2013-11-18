@@ -1,6 +1,8 @@
 package de.capgeti.vereinlager;
 
 import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +36,8 @@ public class KategorieListFragment extends ListFragment {
 
                 Kategorie s = getItem(position);
                 lineOneView.setText(s.getName());
+                lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_storage, 0, 0, 0);
+
                 lineTwoView.setText(s.getGesamt() + " gesamt (" + s.getFrei() + " frei / " + s.getVerwendet() + " verwendet )");
             }
         };
@@ -55,9 +59,17 @@ public class KategorieListFragment extends ListFragment {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.kategorie_list_add:
-                final Intent intent = new Intent(getActivity(), KategorieDetailActivity.class);
-                intent.putExtra("create", true);
-                startActivity(intent);
+                Fragment fragment = new KategorieDetailFragment();
+                Bundle args = new Bundle();
+                args.putBoolean("create", true);
+                fragment.setArguments(args);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment)
+                        .addToBackStack("kategorie")
+                        .commit();
+                getActivity().invalidateOptionsMenu();
                 break;
         }
         return super.onOptionsItemSelected(item);

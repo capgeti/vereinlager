@@ -7,29 +7,24 @@
         >
 
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Hemden"
             android:id="@+id/text1"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:textSize="18dp"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="8dp"
+            android:textSize="18dp"
+            android:gravity="center_vertical"/>
 
     <TextView
-            android:layout_width="183dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="20 ( 10 / 21 )"
             android:id="@+id/text2"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/text1"
             android:gravity="bottom|right"
+            android:layout_marginRight="8dp"
             android:layout_alignTop="@+id/text1"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="57dp"
-            android:layout_alignBottom="@+id/text1"
-            android:layout_marginRight="8dp"/>
+            android:layout_alignBottom="@+id/text1"/>
 </RelativeLayout>

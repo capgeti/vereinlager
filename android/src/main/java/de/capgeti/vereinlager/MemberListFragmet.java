@@ -182,7 +182,7 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         final Cursor cursor = adapter.getCursor();
 
-        ListFragment fragment = new PersonenListFragment();
+        ListFragment fragment = new PersonListFragment();
         Bundle args = new Bundle();
         args.putLong("memberId", cursor.getLong(0));
         fragment.setArguments(args);
