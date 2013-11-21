@@ -65,7 +65,7 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
                     @Override
                     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
                         MenuInflater inflater = actionMode.getMenuInflater();
-                        inflater.inflate(R.menu.member_action_menu, menu);
+                        inflater.inflate(R.menu.simple_action_menu, menu);
                         actionMode.setTitle("Mitglieder");
                         return true;
                     }

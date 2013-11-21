@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:text="Hinzufügen"
-                    android:onClick="addDetail"
+                    android:id="@+id/category_detail_add_detail"
                     />
         </LinearLayout>
 
@@ -79,39 +79,24 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
+            android:orientation="horizontal"
             >
-
-        <TextView
-                android:id="@+id/kategorie_info_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="* Achtung:\nDas entfernen eines bestehenden Details, löscht bei vorhandenen Elementen ebenfalls dieses Detail!"
-                />
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Abbrechen"
-                android:id="@+id/kategorie_detail_save_button"
-                android:onClick="save"
-                android:layout_below="@+id/kategorie_info_text"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/button"
-                />
-
+                android:layout_weight="0.5"
+                android:id="@+id/category_detail_cancel_button"/>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Speichern"
-                android:id="@+id/button"
-                android:onClick="save"
-                android:layout_below="@+id/kategorie_info_text"
-                android:layout_alignParentRight="true"/>
-
-    </RelativeLayout>
-
+                android:id="@+id/category_detail_save_button"
+                android:layout_weight="0.5"
+                />
+    </LinearLayout>
 </LinearLayout>

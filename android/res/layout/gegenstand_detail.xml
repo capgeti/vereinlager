@@ -27,7 +27,6 @@
             android:layout_height="wrap_content"
             android:text="Speichern"
             android:id="@+id/gegenstand_detail_save_button"
-            android:layout_gravity="left|center_vertical"
-            android:onClick="save"/>
+            android:layout_gravity="left|center_vertical"/>
 
 </LinearLayout>

@@ -87,7 +87,7 @@ public class GegenstandListActivity extends ListActivity {
                 item.setTitle(sumView ? "Einzelliste" : "Summierte Liste");
                 break;
             case R.id.gegenstand_list_edit_kategorie:
-                Intent kategorieDetail = new Intent(this, KategorieDetailFragment.class);
+                Intent kategorieDetail = new Intent(this, AbstractCategoryDetailFragment.class);
                 kategorieDetail.putExtra("create", false);
                 kategorieDetail.putExtra("kategorie", "TODO");
                 startActivity(kategorieDetail);

@@ -76,11 +76,11 @@ public class MainActivity extends Activity {
     }
 
     private void selectItem(int position) {
-        Fragment fragment = new KategorieListFragment();
+        Fragment fragment = new CategoryListFragment();
 
         switch (position) {
             case 0:
-                fragment = new KategorieListFragment();
+                fragment = new CategoryListFragment();
                 break;
             case 1:
                 fragment = new MemberListFragmet();
