@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/element_sum_list"
+            android:title="Summierte Liste"
+            android:icon="@drawable/ic_action_sum_list"
+            android:showAsAction="ifRoom|withText"/>
+    <item
+            android:id="@+id/element_single_list"
+            android:title="Einzelliste"
+            android:visible="false"
+            android:icon="@drawable/ic_action_single_list"
+            android:showAsAction="ifRoom|withText"/>
+    <item
+            android:id="@+id/gegenstand_list_add"
+            android:title="Neues Element"
+            android:icon="@drawable/ic_action_new_white"
+            android:showAsAction="ifRoom|withText"/>
+</menu>

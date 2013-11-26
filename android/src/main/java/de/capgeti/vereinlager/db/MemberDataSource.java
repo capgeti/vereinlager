@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import static java.lang.String.valueOf;
+
 /**
  * Author: capgeti
  * Date:   13.11.13 22:02
@@ -35,17 +37,18 @@ public class MemberDataSource {
 
     public Cursor detail(long id) {
         return database.rawQuery("select id as _id, name from member where id = ?",
-                new String[]{String.valueOf(id)});
+                new String[]{valueOf(id)});
     }
 
     public void update(long id, String name) {
         ContentValues values = new ContentValues();
         values.put("name", name);
-        database.update("member", values, "id = " + id, null);
+        database.update("member", values, "id = ?", new String[]{valueOf(id)});
     }
 
     public void delete(long id) {
-        database.delete("member", "id = " + id, null);
+        database.delete("person", "member_id = ?", new String[]{valueOf(id)});
+        database.delete("member", "id = ?", new String[]{valueOf(id)});
     }
 
     public Cursor list() {

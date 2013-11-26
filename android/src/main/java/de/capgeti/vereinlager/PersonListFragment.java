@@ -74,7 +74,7 @@ public class PersonListFragment extends ListFragment {
         actionBar.setTitle(memberCursor.getString(1));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setIcon(R.drawable.ic_action_group_white);
-
+        memberCursor.close();
         setListAdapter(adapter);
     }
 

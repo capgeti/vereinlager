@@ -1,9 +1,6 @@
 package de.capgeti.vereinlager;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.ListFragment;
+import android.app.*;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -33,7 +30,9 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
 
         categoryDataSource = new CategoryDataSource(getActivity());
 
-        getActivity().getActionBar().setTitle("Kategorien");
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setTitle("Kategorien");
+        actionBar.setIcon(R.drawable.ic_action_storage_white);
 
         Cursor list = categoryDataSource.list();
         adapter = new CustomCursorAdapter(getActivity(), R.layout.double_text_list, list) {
@@ -45,7 +44,9 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
                 lineOneView.setText(position.getString(position.getColumnIndex("name")));
                 lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_storage, 0, 0, 0);
 
-                lineTwoView.setText(0 + " gesamt (" + 0 + " frei / " + 0 + " verwendet )");
+                long fullCount = position.getLong(position.getColumnIndex("elements"));
+                long used = position.getLong(position.getColumnIndex("used"));
+                lineTwoView.setText(fullCount + " gesamt ( "+ used + " verwendet )");
             }
         };
         setListAdapter(adapter);
@@ -76,7 +77,7 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
             @Override
             public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.action_edit_member_group:
+                    case R.id.action_edit:
                         final SparseBooleanArray positions = lv.getCheckedItemPositions();
                         int pos = -1;
                         for (int i = 0; i < lv.getCount(); i++) {
@@ -102,7 +103,7 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
                         actionMode.finish();
                         return true;
 
-                    case R.id.action_delete_member_group:
+                    case R.id.action_delete:
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Kategorie Löschen?")
                                 .setMessage("Möchtest du die Kategorie/n wirklich löschen?\nAlle Elemente und Verknüpfungen zu Personen gehen dabei verloren!")
@@ -133,6 +134,8 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
         };
         lv.setMultiChoiceModeListener(multiChoiceModeListener);
         lv.setOnItemClickListener(this);
+
+        refreshList();
     }
 
     @Override public void onPause() {
@@ -167,17 +170,16 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         final Cursor cursor = adapter.getCursor();
 
-//        ListFragment fragment = new GegenstandDetailActivity();
-//        Bundle args = new Bundle();
-//        args.putLong("categoryId", cursor.getLong(0));
-//        fragment.setArguments(args);
-//
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.content_frame, fragment)
-//                .addToBackStack("person")
-//                .commit();
+        ListFragment fragment = new ElementListActivity();
+        Bundle args = new Bundle();
+        args.putLong("categoryId", cursor.getLong(0));
+        fragment.setArguments(args);
 
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .addToBackStack("elemets")
+                .commit();
         getActivity().invalidateOptionsMenu();
     }
 

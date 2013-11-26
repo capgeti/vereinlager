@@ -78,7 +78,7 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
                     @Override
                     public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
-                            case R.id.action_edit_member_group:
+                            case R.id.action_edit:
                                 final SparseBooleanArray positions = lv.getCheckedItemPositions();
                                 int pos = -1;
                                 for (int i = 0; i < lv.getCount(); i++) {
@@ -105,7 +105,7 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
                                 };
                                 return true;
 
-                            case R.id.action_delete_member_group:
+                            case R.id.action_delete:
                                 new AlertDialog.Builder(MemberListFragmet.this.getActivity())
                                         .setTitle("Gruppe Löschen?")
                                         .setMessage("Möchtest du die Gruppe/n wirklich löschen?\nAlle Personen und deren Verknüpfungen gehen dabei verloren!\nBenutzte Gegenstände werden wieder freigegeben.")

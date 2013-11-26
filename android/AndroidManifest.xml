@@ -18,25 +18,12 @@
             >
         <activity
                 android:name=".MainActivity"
+                android:windowSoftInputMode="adjustPan"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity
-                android:name=".KategorieListActivity"
-                android:parentActivityName="MainActivity"/>
-        <activity
-                android:name=".GegenstandListActivity"
-                android:parentActivityName="KategorieListActivity"/>
-        <activity
-                android:name=".AbstractCategoryDetailFragment"
-                android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
-                android:parentActivityName="KategorieListActivity"/>
-        <activity
-                android:name=".GegenstandDetailActivity"
-                android:parentActivityName="GegenstandListActivity"/>
     </application>
 </manifest>

@@ -1,6 +1,6 @@
 package de.capgeti.vereinlager;
 
-import de.capgeti.vereinlager.model.CategoryDetail;
+import de.capgeti.vereinlager.model.Detail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +15,11 @@ public class CategoryCreateFragment extends AbstractCategoryDetailFragment {
         return "Kategorie anlegen";
     }
 
-    @Override public List<CategoryDetail> loadList() {
-        return new ArrayList<CategoryDetail>();
+    @Override public List<Detail> loadList() {
+        return new ArrayList<Detail>();
     }
 
-    @Override protected void saveCategory(String name, String itemName, List<CategoryDetail> details) {
+    @Override protected void saveCategory(String name, String itemName, List<Detail> details) {
         categoryDataSource.create(name, itemName, details);
     }
 }

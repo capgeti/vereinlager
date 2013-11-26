@@ -15,18 +15,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table person (id integer primary key autoincrement, member_id long references member(id), name text)");
         db.execSQL("create table member (id integer primary key autoincrement, name text)");
+        db.execSQL("create table person (id integer primary key autoincrement, member_id long references member(id), name text)");
 
-        db.execSQL("create table category (id integer primary key autoincrement, name text, itemName text)");
-        db.execSQL("create table detailtemplate (id integer primary key autoincrement, name text, defaultValue text, category_id long references category(id))");
+        db.execSQL("create table category (id integer primary key autoincrement, name text, itemName text, details text)");
+        db.execSQL("create table element (id integer primary key autoincrement, name text, details text, category_id long references category(id), person_id long references person(id))");
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int i, int i2) {
         db.execSQL("DROP TABLE IF EXISTS member");
         db.execSQL("DROP TABLE IF EXISTS person");
         db.execSQL("DROP TABLE IF EXISTS category");
-        db.execSQL("DROP TABLE IF EXISTS detailtemplate");
+        db.execSQL("DROP TABLE IF EXISTS element");
 
         onCreate(db);
     }
