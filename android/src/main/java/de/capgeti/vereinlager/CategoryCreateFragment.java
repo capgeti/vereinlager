@@ -15,6 +15,9 @@ public class CategoryCreateFragment extends AbstractCategoryDetailFragment {
         return "Kategorie anlegen";
     }
 
+    @Override protected void setUp() {
+    }
+
     @Override public List<Detail> loadList() {
         return new ArrayList<Detail>();
     }

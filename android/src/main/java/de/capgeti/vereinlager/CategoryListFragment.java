@@ -32,7 +32,7 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
 
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setTitle("Kategorien");
-        actionBar.setIcon(R.drawable.ic_action_storage_white);
+        actionBar.setIcon(R.drawable.ic_launcher);
 
         Cursor list = categoryDataSource.list();
         adapter = new CustomCursorAdapter(getActivity(), R.layout.double_text_list, list) {
@@ -170,7 +170,7 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         final Cursor cursor = adapter.getCursor();
 
-        ListFragment fragment = new ElementListActivity();
+        ListFragment fragment = new ElementListFragment();
         Bundle args = new Bundle();
         args.putLong("categoryId", cursor.getLong(0));
         fragment.setArguments(args);

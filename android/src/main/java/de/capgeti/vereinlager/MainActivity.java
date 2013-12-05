@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item,
-                new String[]{"Kabuff", "Mitglieder", "Export", "Beenden"}));
+                new String[]{"Kabuff", "Mitglieder", "Beenden"}));
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -85,6 +85,9 @@ public class MainActivity extends Activity {
             case 1:
                 fragment = new MemberListFragmet();
                 break;
+            case 2:
+                finish();
+                return;
         }
         setContent(fragment);
         mDrawerList.setItemChecked(position, true);

@@ -1,7 +1,6 @@
 package de.capgeti.vereinlager;
 
 import android.database.Cursor;
-import android.os.Bundle;
 import android.widget.EditText;
 import com.google.gson.reflect.TypeToken;
 import de.capgeti.vereinlager.model.Detail;
@@ -23,7 +22,7 @@ public class CategoryEditFragment extends AbstractCategoryDetailFragment {
         return "Kategorie bearbeiten";
     }
 
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void setUp() {
         id = getArguments().getLong("categoryId");
         Cursor detail = categoryDataSource.detail(id);
         detail.moveToFirst();
@@ -36,7 +35,6 @@ public class CategoryEditFragment extends AbstractCategoryDetailFragment {
         details = gson().fromJson(detail.getString(detail.getColumnIndex("details")), new TypeToken<List<Detail>>() {
         }.getType());
         detail.close();
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override public List<Detail> loadList() {

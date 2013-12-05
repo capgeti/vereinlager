@@ -47,6 +47,7 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
         final ActionBar actionBar = getActivity().getActionBar();
         actionBar.setTitle("Mitglieder");
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setIcon(R.drawable.ic_launcher);
 
         setListAdapter(adapter);
 
@@ -172,11 +173,6 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
     @Override public void onPause() {
         super.onPause();
         memberDataSource.close();
-    }
-
-    @Override public void onResume() {
-        super.onResume();
-        memberDataSource.open();
     }
 
     @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

@@ -29,11 +29,6 @@ public class PersonListFragment extends ListFragment {
         personDataSource.close();
     }
 
-    @Override public void onResume() {
-        super.onResume();
-        personDataSource.open();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +52,12 @@ public class PersonListFragment extends ListFragment {
                 TextView lineOneView = (TextView) listItemView.findViewById(R.id.text1);
                 ImageButton deleteButton = (ImageButton) listItemView.findViewById(R.id.deleteButton);
 
-                lineOneView.setText(position.getString(1));
+                lineOneView.setText(position.getString(position.getColumnIndex("name")));
                 lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_person, 0, 0, 0);
 
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View view) {
-                        personDataSource.delete(position.getLong(0));
+                        personDataSource.delete(position.getLong(position.getColumnIndex("_id")));
                         refreshList();
                         Toast.makeText(PersonListFragment.this.getActivity(), "Person gelöscht!", 2).show();
                     }

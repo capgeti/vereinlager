@@ -15,18 +15,22 @@ public class MemberDataSource {
 
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
+    private PersonDataSource personDataSource;
 
     public MemberDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
+        personDataSource = new PersonDataSource(context);
         open();
     }
 
     public void open() {
         database = dbHelper.getWritableDatabase();
+        personDataSource.open();
     }
 
     public void close() {
         dbHelper.close();
+        personDataSource.close();
     }
 
     public void create(String name) {
@@ -47,7 +51,11 @@ public class MemberDataSource {
     }
 
     public void delete(long id) {
-        database.delete("person", "member_id = ?", new String[]{valueOf(id)});
+        try(Cursor list = personDataSource.list(id)) {
+            while(list.moveToNext()) {
+                personDataSource.delete(list.getLong(list.getColumnIndex("_id")));
+            }
+        }
         database.delete("member", "id = ?", new String[]{valueOf(id)});
     }
 

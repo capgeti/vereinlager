@@ -45,7 +45,6 @@ public abstract class AbstractCategoryDetailFragment extends Fragment {
         actionBar.setIcon(R.drawable.ic_action_storage_white);
 
         setHasOptionsMenu(true);
-        categoryDataSource = new CategoryDataSource(activity);
     }
 
     public abstract String getTitleName();
@@ -55,19 +54,21 @@ public abstract class AbstractCategoryDetailFragment extends Fragment {
         categoryDataSource.close();
     }
 
-    @Override public void onResume() {
-        super.onResume();
-        categoryDataSource.open();
-    }
-
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Activity activity = getActivity();
+        categoryDataSource = new CategoryDataSource(activity);
+
+        setUp();
+
+        Activity activity1 = getActivity();
         details = loadList();
-        adapter = new DetailAdapter(activity.getLayoutInflater(), details);
-        ListView list = (ListView) activity.findViewById(R.id.category_detail_detail_list);
+        adapter = new DetailAdapter(activity1.getLayoutInflater(), details);
+        ListView list = (ListView) activity1.findViewById(R.id.category_detail_detail_list);
         list.setAdapter(adapter);
     }
+
+    protected abstract void setUp();
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -98,12 +99,12 @@ public abstract class AbstractCategoryDetailFragment extends Fragment {
         EditText itemNameText = (EditText) activity.findViewById(R.id.category_detail_item_name);
 
         String name = nameText.getText().toString();
-        if (name == null || name.isEmpty()) {
+        if (name.isEmpty()) {
             Toast.makeText(activity, "Bitte einen Namen angeben!", LENGTH_SHORT).show();
             return;
         }
         String itemName = itemNameText.getText().toString();
-        if (itemName == null || itemName.isEmpty()) {
+        if (itemName.isEmpty()) {
             Toast.makeText(activity, "Bitte einen Standardnamen für ein Element angeben!", LENGTH_SHORT).show();
             return;
         }

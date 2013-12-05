@@ -30,18 +30,14 @@ public class ElementCreateFragment extends AbstractElementDetailFragment {
         categoryDataSource.close();
     }
 
-    @Override public void onResume() {
-        super.onResume();
-        categoryDataSource.open();
-    }
-
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         categoryId = getArguments().getLong("categoryId");
-        categoryDataSource = new CategoryDataSource(getActivity());
     }
 
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
+    @Override public void setUp() {
+        categoryDataSource = new CategoryDataSource(getActivity());
+
         Cursor detail = categoryDataSource.detail(categoryId);
         detail.moveToFirst();
 
@@ -51,14 +47,13 @@ public class ElementCreateFragment extends AbstractElementDetailFragment {
         details = gson().fromJson(detail.getString(detail.getColumnIndex("details")), new TypeToken<List<Detail>>() {
         }.getType());
         detail.close();
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override public List<Detail> loadList() {
         return details;
     }
 
-    @Override protected void saveElement(String name, List<Detail> details) {
-        elementDataSource.create(categoryId, name, details);
+    @Override protected Long saveElement(String name, List<Detail> details) {
+        return elementDataSource.create(categoryId, name, details);
     }
 }

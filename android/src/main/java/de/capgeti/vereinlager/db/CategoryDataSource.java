@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import de.capgeti.vereinlager.model.Detail;
-import de.capgeti.vereinlager.util.GsonHelper;
 
 import java.util.List;
 

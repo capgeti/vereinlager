@@ -20,16 +20,16 @@ public class ElementDataSource extends AbstractDataSource {
         super(context);
     }
 
-    public void create(long categoryId, String name, List<Detail> details) {
+    public long create(long categoryId, String name, List<Detail> details) {
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("category_id", categoryId);
         values.put("details", gson().toJson(details));
-        long id = database.insert("element", null, values);
+        return database.insert("element", null, values);
     }
 
     public Cursor detail(long id) {
-        return database.rawQuery("select * from element where id = ?", new String[]{valueOf(id)});
+        return database.rawQuery("SELECT e.*, p.id as personId FROM element e LEFT JOIN person p ON e.person_id = p.id WHERE e.id = ?", new String[]{valueOf(id)});
     }
 
     public void update(long id, String name, List<Detail> details) {
@@ -43,8 +43,24 @@ public class ElementDataSource extends AbstractDataSource {
         database.delete("element", "id = ?", new String[]{valueOf(id)});
     }
 
-    public Cursor list(long categoryId) {
-        return database.rawQuery("SELECT *, id as _id FROM element WHERE category_id = ? ORDER BY name",
-                new String[]{valueOf(categoryId)});
+    public Cursor list(long categoryId, boolean sumView) {
+        if (sumView) {
+            return database.rawQuery("SELECT name, details, id as _id, count(details) as groupCount, " +
+                    "   count(person_id) as used " +
+                    "FROM element " +
+                    "WHERE category_id = ? " +
+                    "GROUP BY details " +
+                    "ORDER BY name",
+                    new String[]{valueOf(categoryId)});
+        } else {
+            return database.rawQuery("SELECT e.*, e.id as _id, p.name as person FROM element e LEFT JOIN person p ON e.person_id = p.id WHERE e.category_id = ? ORDER BY name",
+                    new String[]{valueOf(categoryId)});
+        }
+    }
+
+    public void assignPerson(long elementId, Long personId) {
+        ContentValues values = new ContentValues();
+        values.put("person_id", personId);
+        database.update("element", values, "id = ?", new String[]{valueOf(elementId)});
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/default_list_selector"
         xmlns:android="http://schemas.android.com/apk/res/android"
         >
@@ -16,35 +16,25 @@
             android:layout_alignParentRight="true"
             android:textSize="18dp"
             android:paddingTop="8dp"
-            android:paddingLeft="8dp"
-            android:paddingBottom="16dp"/>
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@+id/imageButton"/>
 
     <TextView
-            android:layout_width="183dp"
-            android:layout_height="wrap_content"
-            android:text="-> Niemand"
-            android:id="@+id/elementOwner"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/elementName"
-            android:gravity="bottom|right"
-            android:layout_alignTop="@+id/elementName"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="57dp"
-            android:layout_alignBottom="@+id/elementName"
-            android:layout_marginRight="10dp"/>
-
-    <TextView
-            android:layout_width="209dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gr: 40"
             android:id="@+id/elementValues"
-            android:layout_alignRight="@+id/elementName"
-            android:layout_alignTop="@+id/elementName"
-            android:layout_alignBottom="@+id/elementName"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="31dp"
-            android:layout_marginRight="10dp"
             android:textSize="16dp"
-            android:paddingTop="9dp"
-            android:gravity="right"/>
+            android:layout_alignRight="@+id/elementName"
+            android:paddingTop="8dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-> Niemand"
+            android:id="@+id/elementOwner"
+            android:gravity="center_vertical"
+            android:layout_below="@+id/elementValues"
+            android:layout_alignRight="@+id/elementValues"/>
 </RelativeLayout>
