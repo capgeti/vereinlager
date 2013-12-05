@@ -1,6 +1,7 @@
 package de.capgeti.vereinlager;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
@@ -32,7 +33,7 @@ public class MainActivity extends Activity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item,
-                new String[]{"Kabuff", "Mitglieder", "Beenden"}));
+                new String[]{"Kabuff", "Mitglieder", "Info", "Beenden"}));
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -85,7 +86,12 @@ public class MainActivity extends Activity {
             case 1:
                 fragment = new MemberListFragmet();
                 break;
-            case 2:
+             case 2:
+                 new AlertDialog.Builder(this)
+                         .setView(getLayoutInflater().inflate(R.layout.info, null))
+                         .setNeutralButton("Ok", null).create().show();
+                return;
+            case 3:
                 finish();
                 return;
         }

@@ -4,17 +4,24 @@
               android:orientation="vertical"
               android:layout_marginLeft="10dp"
               android:layout_marginRight="10dp"
-              android:layout_width="wrap_content"
+              android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Anwesenheitsprogramm Version 1.0"
+            android:text="Kabufftool"
             android:layout_gravity="left|center_vertical"
             android:textSize="10pt"
             android:gravity="center"
             android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Version 0.2 Alpha"
+            android:id="@+id/textView2"
+            android:layout_gravity="center"/>
 
     <TextView
             android:layout_width="fill_parent"
