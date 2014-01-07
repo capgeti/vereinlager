@@ -11,14 +11,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
     public MySQLiteHelper(Context context) {
-        super(context, "kabuff", null, 1);
+        super(context, "kabuff", null, 2);
     }
 
     @Override public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table member (id integer primary key autoincrement, name text)");
-        db.execSQL("create table person (id integer primary key autoincrement, member_id long references member(id), name text)");
+        db.execSQL("create table person (id integer primary key autoincrement, member_id long references member(id), name text, firstName text, nickName text)");
 
-        db.execSQL("create table category (id integer primary key autoincrement, name text, itemName text, details text)");
+        db.execSQL("create table category (id integer primary key autoincrement, name text, details text)");
         db.execSQL("create table element (id integer primary key autoincrement, name text, details text, category_id long references category(id), person_id long references person(id))");
     }
 

@@ -96,24 +96,18 @@ public abstract class AbstractCategoryDetailFragment extends Fragment {
     public void onCategorySave() {
         Activity activity = getActivity();
         EditText nameText = (EditText) activity.findViewById(R.id.category_detail_name);
-        EditText itemNameText = (EditText) activity.findViewById(R.id.category_detail_item_name);
 
         String name = nameText.getText().toString();
         if (name.isEmpty()) {
             Toast.makeText(activity, "Bitte einen Namen angeben!", LENGTH_SHORT).show();
             return;
         }
-        String itemName = itemNameText.getText().toString();
-        if (itemName.isEmpty()) {
-            Toast.makeText(activity, "Bitte einen Standardnamen für ein Element angeben!", LENGTH_SHORT).show();
-            return;
-        }
 
-        saveCategory(name, itemName, details);
+        saveCategory(name, details);
         Toast.makeText(getActivity(), "Gespeichert...", 2).show();
         getFragmentManager().popBackStack();
     }
 
-    protected abstract void saveCategory(String name, String itemName, List<Detail> details);
+    protected abstract void saveCategory(String name, List<Detail> details);
 
 }

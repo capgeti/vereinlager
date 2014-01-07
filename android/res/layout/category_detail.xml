@@ -21,14 +21,6 @@
             android:hint="Kategoriename"
             />
 
-    <EditText
-            android:id="@+id/category_detail_item_name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:hint="Standard Detailname"
-            />
-
     <TextView
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"

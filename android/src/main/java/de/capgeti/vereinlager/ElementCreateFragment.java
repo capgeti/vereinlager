@@ -42,7 +42,7 @@ public class ElementCreateFragment extends AbstractElementDetailFragment {
         detail.moveToFirst();
 
         EditText name = (EditText) getActivity().findViewById(R.id.element_detail_name);
-        name.setText(detail.getString(detail.getColumnIndex("itemName")));
+        name.setText(detail.getString(detail.getColumnIndex("name")));
 
         details = gson().fromJson(detail.getString(detail.getColumnIndex("details")), new TypeToken<List<Detail>>() {
         }.getType());

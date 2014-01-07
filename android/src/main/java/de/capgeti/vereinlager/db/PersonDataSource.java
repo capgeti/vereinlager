@@ -29,11 +29,21 @@ public class PersonDataSource {
         dbHelper.close();
     }
 
-    public void create(String name, long memberId) {
+    public void create(String name, String firstName, String nickName, long memberId) {
         ContentValues values = new ContentValues();
         values.put("name", name);
+        values.put("firstName", firstName);
+        values.put("nickName", nickName);
         values.put("member_id", memberId);
         database.insert("person", null, values);
+    }
+
+    public void update(long id, String name, String firstName, String nickName) {
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("firstName", firstName);
+        values.put("nickName", nickName);
+        database.update("person", values, "id = ?", new String[]{valueOf(id)});
     }
 
     public void delete(long id) {
@@ -45,9 +55,9 @@ public class PersonDataSource {
 
     public Cursor list(Long memberId) {
         if(memberId == null) {
-            return database.rawQuery("SELECT name, id AS _id FROM person ORDER BY name", new String[0]);
+            return database.rawQuery("SELECT *, id AS _id FROM person ORDER BY name", new String[0]);
         }
-        return database.rawQuery("SELECT p.name, p.id as _id FROM person p LEFT JOIN member s ON p.member_id = s.id " +
+        return database.rawQuery("SELECT p.*, p.id as _id FROM person p LEFT JOIN member s ON p.member_id = s.id " +
                 "WHERE p.member_id = ? ORDER BY p.name", new String[]{valueOf(memberId)});
     }
 

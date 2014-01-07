@@ -22,7 +22,7 @@ public class CategoryCreateFragment extends AbstractCategoryDetailFragment {
         return new ArrayList<Detail>();
     }
 
-    @Override protected void saveCategory(String name, String itemName, List<Detail> details) {
-        categoryDataSource.create(name, itemName, details);
+    @Override protected void saveCategory(String name, List<Detail> details) {
+        categoryDataSource.create(name, details);
     }
 }

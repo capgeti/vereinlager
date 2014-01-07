@@ -175,12 +175,10 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
         memberDataSource.close();
     }
 
-    @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        final Cursor cursor = adapter.getCursor();
-
+    @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         ListFragment fragment = new PersonListFragment();
         Bundle args = new Bundle();
-        args.putLong("memberId", cursor.getLong(0));
+        args.putLong("memberId", id);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();

@@ -167,12 +167,10 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
         menuInflater.inflate(R.menu.kategorie_list_menu, menu);
     }
 
-    @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        final Cursor cursor = adapter.getCursor();
-
+    @Override public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         ListFragment fragment = new ElementListFragment();
         Bundle args = new Bundle();
-        args.putLong("categoryId", cursor.getLong(0));
+        args.putLong("categoryId", id);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();

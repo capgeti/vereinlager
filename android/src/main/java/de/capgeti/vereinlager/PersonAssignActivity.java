@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import de.capgeti.vereinlager.db.ElementDataSource;
 import de.capgeti.vereinlager.db.PersonDataSource;
+import de.capgeti.vereinlager.model.Person;
 import de.capgeti.vereinlager.util.CustomCursorAdapter;
 
 /**
@@ -40,7 +40,10 @@ public class PersonAssignActivity extends ListActivity {
             @Override
             protected void fillView(final View listItemView, final Cursor position) {
                 TextView lineOneView = (TextView) listItemView.findViewById(R.id.text1);
-                lineOneView.setText(position.getString(position.getColumnIndex("name")));
+                String name = position.getString(position.getColumnIndex("name"));
+                String firstName = position.getString(position.getColumnIndex("firstName"));
+                String nickName = position.getString(position.getColumnIndex("nickName"));
+                lineOneView.setText(Person.getPersonName(name, firstName, nickName));
                 lineOneView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_person, 0, 0, 0);
             }
         };

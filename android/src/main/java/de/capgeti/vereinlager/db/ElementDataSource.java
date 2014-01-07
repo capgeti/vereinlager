@@ -43,7 +43,7 @@ public class ElementDataSource extends AbstractDataSource {
         database.delete("element", "id = ?", new String[]{valueOf(id)});
     }
 
-    public Cursor list(long categoryId, boolean sumView) {
+    public Cursor listForCategory(long categoryId, boolean sumView) {
         if (sumView) {
             return database.rawQuery("SELECT name, details, id as _id, count(details) as groupCount, " +
                     "   count(person_id) as used " +
@@ -53,9 +53,14 @@ public class ElementDataSource extends AbstractDataSource {
                     "ORDER BY name",
                     new String[]{valueOf(categoryId)});
         } else {
-            return database.rawQuery("SELECT e.*, e.id as _id, p.name as person FROM element e LEFT JOIN person p ON e.person_id = p.id WHERE e.category_id = ? ORDER BY name",
+            return database.rawQuery("SELECT e.*, e.id as _id, p.name as personName, p.firstName as personFirstName, p.nickName as personNickName FROM element e LEFT JOIN person p ON e.person_id = p.id WHERE e.category_id = ? ORDER BY name",
                     new String[]{valueOf(categoryId)});
         }
+    }
+
+    public Cursor listForPerson(long personId) {
+            return database.rawQuery("SELECT *, id as _id FROM element WHERE person_id = ? ORDER BY name",
+                    new String[]{valueOf(personId)});
     }
 
     public void assignPerson(long elementId, Long personId) {

@@ -3,6 +3,7 @@ package de.capgeti.vereinlager;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_SHORT;
+import static de.capgeti.vereinlager.model.Person.getPersonName;
 
 /**
  * Author: capgeti
@@ -30,14 +32,16 @@ public abstract class AbstractElementDetailFragment extends Fragment {
     private DetailAdapter adapter;
     private Long personId;
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.element_detail, container, false);
 
         Button addDetailButton = (Button) view.findViewById(R.id.element_detail_add_detail);
         addDetailButton.setOnClickListener(new
 
                                                    View.OnClickListener() {
-                                                       @Override public void onClick(View view) {
+                                                       @Override
+                                                       public void onClick(View view) {
                                                            details.add(new Detail(null, null));
                                                            adapter.notifyDataSetChanged();
                                                        }
@@ -46,7 +50,8 @@ public abstract class AbstractElementDetailFragment extends Fragment {
         return view;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
                 onElementSave();
@@ -72,6 +77,7 @@ public abstract class AbstractElementDetailFragment extends Fragment {
     protected void updatePersonHandling(final Long personId) {
         this.personId = personId;
         final TextView peronNameView = (TextView) getActivity().findViewById(R.id.element_detail_person_name);
+        final Button goToPerson = (Button) getActivity().findViewById(R.id.element_detail_goToPerson);
 
         final ImageButton assignPerson = (ImageButton) getActivity().findViewById(R.id.element_detail_assign_person);
         assignPerson.setOnClickListener(new View.OnClickListener() {
@@ -93,11 +99,31 @@ public abstract class AbstractElementDetailFragment extends Fragment {
 
 
         deleteButton.setVisibility(personId != null ? VISIBLE : GONE);
+        goToPerson.setVisibility(personId != null ? VISIBLE : GONE);
         assignPerson.setVisibility(personId == null ? VISIBLE : GONE);
-        if(personId != null) {
+        if (personId != null) {
             try (Cursor c = personDataSource.detail(personId)) {
                 if (c.moveToFirst()) {
-                    peronNameView.setText(c.getString(c.getColumnIndex("name")));
+                    String name = c.getString(c.getColumnIndex("name"));
+                    String firstName = c.getString(c.getColumnIndex("firstName"));
+                    String nickName = c.getString(c.getColumnIndex("nickName"));
+                    peronNameView.setText(getPersonName(name, firstName, nickName));
+
+                    goToPerson.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Fragment fragment = new PersonEditFragment();
+                            Bundle args = new Bundle();
+                            args.putLong("personId", personId);
+                            fragment.setArguments(args);
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.content_frame, fragment)
+                                    .addToBackStack("persons")
+                                    .commit();
+                            getActivity().invalidateOptionsMenu();
+                        }
+                    });
                 }
             }
         } else {
@@ -105,30 +131,35 @@ public abstract class AbstractElementDetailFragment extends Fragment {
         }
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Activity activity = getActivity();
-        final ActionBar actionBar = activity.getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getTitleName());
-        actionBar.setIcon(R.drawable.ic_action_labels_white);
         setHasOptionsMenu(true);
     }
 
     public abstract String getTitleName();
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         super.onPause();
         elementDataSource.close();
         personDataSource.close();
     }
-    @Override public void onResume() {
+
+    @Override
+    public void onResume() {
         super.onPause();
+        Activity activity = getActivity();
+        final ActionBar actionBar = activity.getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(getTitleName());
+        actionBar.setIcon(R.drawable.ic_action_labels_white);
         elementDataSource.open();
         personDataSource.open();
     }
 
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Activity activity = getActivity();
         elementDataSource = new ElementDataSource(activity);
@@ -166,7 +197,8 @@ public abstract class AbstractElementDetailFragment extends Fragment {
 
     protected abstract Long saveElement(String name, List<Detail> details);
 
-    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.simple_edit_menu, menu);
     }
 }

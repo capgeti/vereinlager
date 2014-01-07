@@ -17,6 +17,7 @@ import de.capgeti.vereinlager.util.GsonHelper;
 import java.util.List;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static de.capgeti.vereinlager.model.Person.getPersonName;
 
 /**
  * Author: capgeti
@@ -44,7 +45,7 @@ public class ElementListFragment extends ListFragment implements AdapterView.OnI
 
         categoryId = getArguments().getLong("categoryId");
 
-        adapter = new CustomCursorAdapter(getActivity(), R.layout.element_list_item, elementDataSource.list(categoryId, sumView)) {
+        adapter = new CustomCursorAdapter(getActivity(), R.layout.element_list_item, elementDataSource.listForCategory(categoryId, sumView)) {
             @Override
             protected void fillView(View listItemView, Cursor position) {
                 TextView name = (TextView) listItemView.findViewById(R.id.elementName);
@@ -70,9 +71,11 @@ public class ElementListFragment extends ListFragment implements AdapterView.OnI
                     besitzer.setText(all + " gesamt ( " + (all - used) + " frei / " + used + " verwendet )");
                     besitzer.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 } else {
-                    String person = position.getString(position.getColumnIndex("person"));
-                    besitzer.setText(person);
-                    if (person != null && !person.isEmpty()) {
+                    String personName = position.getString(position.getColumnIndex("personName"));
+                    String personFirstName = position.getString(position.getColumnIndex("personFirstName"));
+                    String personNickName = position.getString(position.getColumnIndex("personNickName"));
+                    if (personName != null && personFirstName != null && personNickName != null) {
+                        besitzer.setText(getPersonName(personName, personFirstName, personNickName));
                         besitzer.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_person_small, 0, 0, 0);
                     }
                 }
@@ -178,7 +181,7 @@ public class ElementListFragment extends ListFragment implements AdapterView.OnI
     }
 
     private void refreshList() {
-        Cursor list = elementDataSource.list(categoryId, sumView);
+        Cursor list = elementDataSource.listForCategory(categoryId, sumView);
         Cursor old = adapter.swapCursor(list);
         if (old != null) old.close();
     }

@@ -33,10 +33,9 @@ public class CategoryDataSource {
         dbHelper.close();
     }
 
-    public void create(String name, String itemName, List<Detail> details) {
+    public void create(String name, List<Detail> details) {
         ContentValues values = new ContentValues();
         values.put("name", name);
-        values.put("itemName", itemName);
         values.put("details", gson().toJson(details));
         database.insert("category", null, values);
     }
@@ -45,10 +44,9 @@ public class CategoryDataSource {
         return database.rawQuery("select * from category where id = ?", new String[]{valueOf(id)});
     }
 
-    public void update(long id, String name, String itemName, List<Detail> details) {
+    public void update(long id, String name, List<Detail> details) {
         ContentValues values = new ContentValues();
         values.put("name", name);
-        values.put("itemName", itemName);
         values.put("details", gson().toJson(details));
         database.update("category", values, "id = ?", new String[]{valueOf(id)});
     }
