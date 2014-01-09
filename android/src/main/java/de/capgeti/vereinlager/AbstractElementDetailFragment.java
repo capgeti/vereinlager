@@ -83,7 +83,7 @@ public abstract class AbstractElementDetailFragment extends Fragment {
         assignPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(getActivity(), PersonAssignActivity.class), 1);
+                startActivityForResult(new Intent(getActivity(), MemberAssignActivity.class).putExtra("withPerson", true), 1);
             }
         });
 

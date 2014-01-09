@@ -33,7 +33,9 @@ public class PersonAssignActivity extends ListActivity {
 
         personDataSource = new PersonDataSource(this);
 
-        final Cursor personen = personDataSource.list(null);
+        Long memberId = getIntent().getLongExtra("memberId", -1);
+        memberId = memberId == -1 ? null : memberId;
+        final Cursor personen = personDataSource.list(memberId);
 
         CustomCursorAdapter adapter = new CustomCursorAdapter(this, R.layout.person_assign_list_item, personen) {
 
@@ -51,7 +53,7 @@ public class PersonAssignActivity extends ListActivity {
         final ActionBar actionBar = getActionBar();
         actionBar.setTitle("Person zuweisen");
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setIcon(R.drawable.ic_action_labels_white);
+        actionBar.setIcon(R.drawable.ic_action_person_white);
         setListAdapter(adapter);
     }
 
@@ -66,6 +68,7 @@ public class PersonAssignActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
             case R.id.action_cancel:
                 setResult(RESULT_CANCELED);
                 finish();

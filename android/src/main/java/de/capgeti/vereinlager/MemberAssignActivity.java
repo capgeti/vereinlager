@@ -19,6 +19,7 @@ import de.capgeti.vereinlager.util.CustomCursorAdapter;
  */
 public class MemberAssignActivity extends ListActivity {
     private MemberDataSource memberDataSource;
+    private boolean withPerson;
 
     @Override
     public void onPause() {
@@ -34,6 +35,8 @@ public class MemberAssignActivity extends ListActivity {
 
         final Cursor member = memberDataSource.list();
 
+        withPerson = getIntent().getBooleanExtra("withPerson", false);
+
         CustomCursorAdapter adapter = new CustomCursorAdapter(this, R.layout.person_assign_list_item, member) {
 
             @Override
@@ -46,21 +49,37 @@ public class MemberAssignActivity extends ListActivity {
 
         final ActionBar actionBar = getActionBar();
         actionBar.setTitle("Gruppe wählen");
-        actionBar.setIcon(R.drawable.ic_action_labels_white);
+        actionBar.setIcon(R.drawable.ic_action_group_white);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
         setListAdapter(adapter);
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            setResult(RESULT_OK, data);
+            finish();
+        }
+    }
+
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Intent data = new Intent();
-        data.putExtra("memberId", id);
-        setResult(RESULT_OK, data);
-        finish();
+        if (withPerson) {
+            startActivityForResult(new Intent(this, PersonAssignActivity.class).putExtra("memberId", id), 1);
+        } else {
+            Intent data = new Intent();
+            data.putExtra("memberId", id);
+            setResult(RESULT_OK, data);
+            finish();
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
             case R.id.action_cancel:
                 setResult(RESULT_CANCELED);
                 finish();
