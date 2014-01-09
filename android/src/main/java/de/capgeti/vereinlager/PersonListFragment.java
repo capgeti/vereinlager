@@ -168,7 +168,7 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
         if (requestCode == 1 && resultCode == RESULT_OK) {
             long memberId = data.getLongExtra("memberId", -1);
             if(memberId == -1) {
-                Toast.makeText(getActivity(), "Keine Stimmgruppe ausgewählt!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Keine Gruppe ausgewählt!", Toast.LENGTH_SHORT).show();
                 return;
             }
 

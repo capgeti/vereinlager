@@ -45,7 +45,7 @@ public class MemberAssignActivity extends ListActivity {
         };
 
         final ActionBar actionBar = getActionBar();
-        actionBar.setTitle("Stimmgruppe wählen");
+        actionBar.setTitle("Gruppe wählen");
         actionBar.setIcon(R.drawable.ic_action_labels_white);
         setListAdapter(adapter);
     }

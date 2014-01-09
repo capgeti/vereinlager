@@ -3,7 +3,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:id="@+id/member_list_add"
-            android:title="Stimmgruppe hinzufügen"
+            android:title="Hinzufügen"
             android:icon="@drawable/ic_action_add_group_white"
             android:showAsAction="ifRoom|withText"/>
 </menu>
