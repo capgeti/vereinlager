@@ -1,8 +1,11 @@
 package de.capgeti.vereinlager;
 
+import android.*;
+import android.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,7 +23,7 @@ public class SimplePrompt extends AlertDialog.Builder implements DialogInterface
     private AlertDialog alertDialog;
 
     public SimplePrompt(Context context, String title, String message, String ok, String cancel, String defaultValue) {
-        super(context);
+        super(new ContextThemeWrapper(context, R.style.Theme_DeviceDefault_Light));
         setTitle(title);
         setMessage(message);
         input = new EditText(context);

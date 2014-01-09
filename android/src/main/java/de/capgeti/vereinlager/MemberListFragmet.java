@@ -107,7 +107,7 @@ public class MemberListFragmet extends ListFragment implements AdapterView.OnIte
                                 return true;
 
                             case R.id.action_delete:
-                                new AlertDialog.Builder(MemberListFragmet.this.getActivity())
+                                new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_DeviceDefault_Light))
                                         .setTitle("Gruppe Löschen?")
                                         .setMessage("Möchtest du die Gruppe/n wirklich löschen?\nAlle Personen und deren Verknüpfungen gehen dabei verloren!\nBenutzte Gegenstände werden wieder freigegeben.")
                                         .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {

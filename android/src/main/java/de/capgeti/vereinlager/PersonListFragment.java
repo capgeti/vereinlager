@@ -123,7 +123,7 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
                         return true;
 
                     case R.id.action_delete:
-                        new AlertDialog.Builder(getActivity())
+                        new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_DeviceDefault_Light))
                                 .setTitle("Personen Löschen?")
                                 .setMessage("Möchtest du die Person/en wirklich löschen?\nAlle Verknüpfungen zu Elementen gehen dabei verloren!")
                                 .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {

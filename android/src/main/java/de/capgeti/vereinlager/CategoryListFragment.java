@@ -104,7 +104,7 @@ public class CategoryListFragment extends ListFragment implements AdapterView.On
                         return true;
 
                     case R.id.action_delete:
-                        new AlertDialog.Builder(getActivity())
+                        new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_DeviceDefault_Light))
                                 .setTitle("Kategorie Löschen?")
                                 .setMessage("Möchtest du die Kategorie/n wirklich löschen?\nAlle Elemente und Verknüpfungen zu Personen gehen dabei verloren!")
                                 .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {

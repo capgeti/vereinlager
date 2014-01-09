@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -87,7 +88,7 @@ public class MainActivity extends Activity {
                 fragment = new MemberListFragmet();
                 break;
              case 2:
-                 new AlertDialog.Builder(this)
+                 new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light))
                          .setView(getLayoutInflater().inflate(R.layout.info, null))
                          .setNeutralButton("Ok", null).create().show();
                 return;

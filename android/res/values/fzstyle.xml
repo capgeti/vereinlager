@@ -2,6 +2,9 @@
     <style name="FzTheme" parent="@android:Theme.DeviceDefault.Light">
         <item name="android:actionBarStyle">@style/FzActionBar</item>
         <item name="android:actionButtonStyle">@style/FzActionButtonStyle</item>
+
+        <item name="android:actionMenuTextColor">@android:color/white</item>
+
         <item name="android:actionModeStyle">@style/FzActionModeStyle</item>
         <item name="android:actionModeCloseDrawable">@drawable/ic_action_previous_item</item>
 
@@ -19,6 +22,7 @@
 
     <style name="FzActionButtonStyle" parent="@android:Widget.ActionButton">
         <item name="android:background">@drawable/actionbutton_selector</item>
+        <item name="android:drawablePadding">10dp</item>
     </style>
 
     <style name="FzActionModeStyle" parent="@android:Widget.DeviceDefault.ActionMode">

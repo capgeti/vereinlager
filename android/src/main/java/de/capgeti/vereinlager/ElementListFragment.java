@@ -147,7 +147,7 @@ public class ElementListFragment extends ListFragment implements AdapterView.OnI
                         return true;
 
                     case R.id.action_delete:
-                        new AlertDialog.Builder(getActivity())
+                        new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_DeviceDefault_Light))
                                 .setTitle("Element Löschen?")
                                 .setMessage("Möchtest du das/die Element/e wirklich löschen?\nAlle Verknüpfungen zu Personen gehen dabei verloren!")
                                 .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {
