@@ -25,5 +25,7 @@
         </activity>
         <activity
                 android:name=".PersonAssignActivity"/>
+        <activity
+                android:name=".MemberAssignActivity"/>
     </application>
 </manifest>

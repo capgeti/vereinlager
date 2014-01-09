@@ -2,6 +2,7 @@ package de.capgeti.vereinlager;
 
 import android.app.*;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -12,6 +13,7 @@ import de.capgeti.vereinlager.db.PersonDataSource;
 import de.capgeti.vereinlager.model.Person;
 import de.capgeti.vereinlager.util.CustomCursorAdapter;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 
 /**
@@ -24,6 +26,7 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
     private MemberDataSource memberDataSource;
     private CustomCursorAdapter adapter;
     private long memberId;
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,20 +69,21 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
         };
         setListAdapter(adapter);
 
-        final ListView lv = getListView();
-        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView = getListView();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         final AbsListView.MultiChoiceModeListener multiChoiceModeListener = new AbsListView.MultiChoiceModeListener() {
+
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
-                final int count = lv.getCheckedItemCount();
+                final int count = listView.getCheckedItemCount();
                 actionMode.setSubtitle(count + " ausgewählt");
-                actionMode.getMenu().getItem(0).setVisible(count < 2);
+                actionMode.getMenu().findItem(R.id.action_edit).setVisible(count < 2);
             }
 
             @Override
             public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
                 MenuInflater inflater = actionMode.getMenuInflater();
-                inflater.inflate(R.menu.simple_action_menu, menu);
+                inflater.inflate(R.menu.person_list_action_menu, menu);
                 actionMode.setTitle("Personen");
                 return true;
             }
@@ -93,9 +97,9 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
             public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_edit:
-                        final SparseBooleanArray positions = lv.getCheckedItemPositions();
+                        final SparseBooleanArray positions = listView.getCheckedItemPositions();
                         int pos = -1;
-                        for (int i = 0; i < lv.getCount(); i++) {
+                        for (int i = 0; i < listView.getCount(); i++) {
                             if (positions.get(i)) {
                                 pos = i;
                                 break;
@@ -125,9 +129,9 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
                                 .setPositiveButton("Ja, Okay", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        final SparseBooleanArray pos = lv.getCheckedItemPositions();
+                                        final SparseBooleanArray pos = listView.getCheckedItemPositions();
                                         final Cursor adapterCursor = adapter.getCursor();
-                                        for (int j = 0; j < lv.getCount(); j++) {
+                                        for (int j = 0; j < listView.getCount(); j++) {
                                             if (pos.get(j)) {
                                                 adapterCursor.moveToPosition(j);
                                                 personDataSource.delete(adapterCursor.getLong(0));
@@ -139,7 +143,11 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
                                     }
                                 })
                                 .setNegativeButton("Ne doch nicht", null).create().show();
+                        break;
 
+                    case R.id.action_move:
+                        startActivityForResult(new Intent(getActivity(), MemberAssignActivity.class), 1);
+                        break;
                 }
                 return false;
             }
@@ -148,11 +156,35 @@ public class PersonListFragment extends ListFragment implements AdapterView.OnIt
             public void onDestroyActionMode(ActionMode actionMode) {
             }
         };
-        lv.setMultiChoiceModeListener(multiChoiceModeListener);
-        lv.setOnItemClickListener(this);
+        listView.setMultiChoiceModeListener(multiChoiceModeListener);
+        listView.setOnItemClickListener(this);
 
         refreshList();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        personDataSource.open();
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            long memberId = data.getLongExtra("memberId", -1);
+            if(memberId == -1) {
+                Toast.makeText(getActivity(), "Keine Stimmgruppe ausgewählt!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            final SparseBooleanArray pos = listView.getCheckedItemPositions();
+            final Cursor adapterCursor = adapter.getCursor();
+            for (int j = 0; j < listView.getCount(); j++) {
+                if (pos.get(j)) {
+                    adapterCursor.moveToPosition(j);
+                    personDataSource.setMember(adapterCursor.getLong(adapterCursor.getColumnIndex("id")), memberId);
+                }
+            }
+            refreshList();
+            Toast.makeText(getActivity(), "Person/en verschoben!", 2).show();
+        }
+    }
+
 
     @Override
     public void onPause() {

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import static java.lang.String.*;
+import static java.lang.String.valueOf;
 
 /**
  * Author: capgeti
@@ -63,5 +64,11 @@ public class PersonDataSource {
 
     public Cursor detail(Long personId) {
         return database.rawQuery("SELECT * FROM person WHERE id = ?", new String[]{valueOf(personId)});
+    }
+
+    public void setMember(long personId, long memberId) {
+        ContentValues values = new ContentValues();
+        values.put("member_id", memberId);
+        database.update("person", values, "id = ?", new String[]{valueOf(personId)});
     }
 }

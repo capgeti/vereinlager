@@ -2,6 +2,11 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+            android:id="@+id/action_move"
+            android:title="Verschieben"
+            android:icon="@drawable/ic_action_person_assign"
+            android:showAsAction="ifRoom|withText"/>
+    <item
             android:id="@+id/action_edit"
             android:title="Bearbeiten"
             android:icon="@drawable/ic_action_edit_white"
@@ -10,5 +15,4 @@
             android:id="@+id/action_delete"
             android:title="Löschen"
             android:icon="@drawable/ic_action_discard_white"
-            android:showAsAction="ifRoom|withText"/>
-</menu>
+            android:showAsAction="ifRoom|withText"/></menu>
