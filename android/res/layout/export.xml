@@ -2,11 +2,74 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_marginLeft="10dp"
-              android:layout_marginRight="10dp"
-              android:gravity="center"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="wrap_content">
 
+
+    <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Statistik-Export als Exceldatei"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Export /sdcard/kabuff_&lt;datum&gt;.xls"
+            android:id="@+id/exportExcel"
+            android:enabled="false"/>
+
+    <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Datenbank Backup/Restore"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Backup"
+                android:id="@+id/backupButton"
+                android:enabled="false"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/backupMsg"
+                />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Restore"
+                android:id="@+id/restoreButton"
+                android:enabled="false"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/restoreMessage"
+                />
+
+    </LinearLayout>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Backup Löschen"
+            android:id="@+id/deleteBackup"/>
 
 </LinearLayout>

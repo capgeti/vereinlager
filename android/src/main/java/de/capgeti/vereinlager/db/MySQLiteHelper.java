@@ -10,8 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
+    public static final int DB_VERSION = 2;
+
     public MySQLiteHelper(Context context) {
-        super(context, "kabuff", null, 2);
+        super(context, "kabuff", null, DB_VERSION);
     }
 
     @Override public void onCreate(SQLiteDatabase db) {

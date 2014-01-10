@@ -34,10 +34,11 @@ public class MainActivity extends Activity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item,
-                new String[]{"Kabuff", "Mitglieder", "Info", "Beenden"}));
+                new String[]{"Kabuff", "Mitglieder", "Exportieren", "Info", "Beenden"}));
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 selectItem(i);
             }
         });
@@ -87,12 +88,15 @@ public class MainActivity extends Activity {
             case 1:
                 fragment = new MemberListFragmet();
                 break;
-             case 2:
-                 new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light))
-                         .setView(getLayoutInflater().inflate(R.layout.info, null))
-                         .setNeutralButton("Ok", null).create().show();
-                return;
+            case 2:
+                fragment = new ExportFragment();
+                break;
             case 3:
+                new AlertDialog.Builder(new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault_Light))
+                        .setView(getLayoutInflater().inflate(R.layout.info, null))
+                        .setNeutralButton("Ok", null).create().show();
+                return;
+            case 4:
                 finish();
                 return;
         }
